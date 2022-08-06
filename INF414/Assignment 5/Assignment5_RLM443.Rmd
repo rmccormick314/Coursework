@@ -1,0 +1,174 @@
+---
+title: "Assignment5"
+author: "Richard McCormick"
+date: "February 27th, 2022"
+output:
+  pdf_document: 
+    fig_caption: yes
+header-includes:
+  \usepackage{float}
+  \floatplacement{figure}{H}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.pos = 'h')
+```
+
+Our goal for this assignment is to understand the dynamics of a vector-borne disease that has a single primary host (human) and a single vector species (mosquito). Consider the following set of equations:
+
+\[\begin{aligned}
+\text{Mosquitoes:} \\
+\frac{dX_{M}}{dt} &=  \mu_{M} N_{M} - r T_{MH} X_{M} Y_{H} - \mu_{M} X_{M} \\
+\frac{dY_{M}}{dt} &=  r T_{MH} X_{M} Y_{H} - \mu_{M} Y_{M} \\
+\hline \\
+\text{Humans:} \\
+\frac{dX_{H}}{dt} &= \mu_{H} N_{H} - r T_{HM} X_{H} Y_{M} - \mu_{H} X_{H} \\
+\frac{dY_{H}}{dt} &= r T_{HM} X_{H} Y_{M} - (\gamma_{H} + \mu_{H}) Y_{H} \\
+\frac{dZ_{H}}{dt} &= \gamma_{H} Y_{H} - \mu_{H} Z_{H} \\
+\end{aligned}\]
+
+
+# Task 1 (10 points)
+
+Imagine you were using this model in a manuscript to be submitted to a scientific journal. In a brief paragraph (max 300 words), describe the biological processes and assumptions that are represented by these equations. Within your paragraph (and not as a list), define each parameter verbally. This is good practice for explaining equations to a broad audience.
+
+\textbf{This is an equational model of a disease which is transferable between mosquiotes and humans. This model uses an SI model for Mosquitoes, which is to say that infected mosquitoes will never recover from the disease. For humans, an SIR model is used, which assumes that humans are able to recover from the disease.}
+
+\textbf{The variable $\mu_{M or H}$ represents the birth rate of mosquitoes (M) or humans (H), and $N_{M or H}$ represents the population size of humans or mosquitoes. $T_{MH}$ represents the rate of transmission from Humans to Mosquitoes, and $T_{HM}$ represents the rate of transmission from Mosquitoes to Humans. $\gamma_{H}$ represents the average recovery period for humans.}
+
+\newpage
+
+# Task 2 (25 points)
+
+Use previous code and your mathematical wisdom to computationally solve this set of 5 ordinary differential equations. Use your knowledge and intuition to assign realistic values for the parameters. *Hints*: Use a time unit of day$^{-1}$. Transmission probabilities range 0-1. Assume that the constant mosquito biting rate, $b$, is less than 1 per day, and use this $b$ to calculate $r$.  
+
+- Create a figure of the dynamics showing each model class as a different line (use line colors and/or line types to define the classes). Label your axes with proper units. *Hint*: Put your y-axis on a log-10 scale (i.e., use `log10()` to transform your density outputs). 
+
+- Run your ODEs long enough to see an \textbf{endemic equilibrium}.
+
+- Create a figure legend (on the graph or as text below the graph) to define the line colors/types.
+
+```{r}
+library(deSolve)
+library(tidyverse)
+library(lubridate)
+library(EpiEstim)
+
+muM = 1/7
+muH = 1/(70*365)
+nM = 1000
+nH = 500
+b = 0.85
+
+r = b/nH
+
+tMH = 0.75
+tHM = 0.75
+gammaH = 1/14
+
+params = c(muM = muM,
+           muH = muH,
+           nM = nM,
+           tMH = tMH,
+           tHM = tHM,
+           r = r,
+           gammaH = gammaH)
+
+Human_Mosquito_ODE = function(t, y, params){
+  with(as.list(c(y, params)), {
+    dydt = rep(0, 5)
+    
+    # Mosquito Equations
+    dydt[1] = (muM * nM) - (r * tMH * y[1] * y[4]) - (muM * y[1])
+    dydt[2] = (r * tMH * y[1] * y[4]) - (muM * y[2])
+    
+    # Human Equations
+    dydt[3] = (muH * nH) - (r * tHM * y[3] * y[2]) - (muH * y[3])
+    dydt[4] = (r * tHM * y[3] * y[2]) - ((gammaH + muH) * y[4])
+    dydt[5] = (gammaH * y[4]) - (muH * y[5])
+    
+    return(list(dydt))
+    
+  })
+}
+
+#Initial conditions
+xM = nM - 1
+yM = 1
+xH = nH
+yH = 0
+zH = 0
+
+# Store in a vector
+inits = c(xM, yM, xH, yH, zH)
+
+# Each time step that will be solved
+time_ode = seq(1, 5000, by = 1)
+
+# Run ODE
+out = ode(y = inits, 
+          times = time_ode, 
+          func = Human_Mosquito_ODE, 
+          method="ode45", # Runge-Kutta 4-5 method
+          parms = params)
+
+# Object 'out' is a matrix
+# Specify the column names, convert to data frame:
+colnames(out) = c("time", "xM", "yM", "xH", "yH", "zH")
+out = data.frame(out)
+
+long_out = 
+  out %>%
+  pivot_longer(cols=2:6,
+               names_to = "Var",
+               values_to = "Vals")
+
+ggplot(long_out) +
+  geom_path(aes(x = time, y = Vals, color = Var)) +
+  labs(x="", y=expression(R[t]*", Instant. Reprod. Num.")) +
+  scale_y_continuous(trans="log10")
+```
+
+# Task 3 (15 points)
+
+As noted above, these equations reach an endemic equilibrium. Create a plot that demonstrates how the equilibrium number of infected humans (${Y_{H}}^{*}$) depends on the size of the mosquito population ($N_M$). Keep all other parameters constant. You need to think about how to extract ${Y_{H}}^{*}$ from your model output (we are not calculating it analytically). *Hint*: You should not see oscillations in this figure. If you do, you need to run your model for more time, to reach the endemic equilibrium across all your values of $N_M$.
+
+```{r}
+runs = 100
+
+time_ode = seq(1, 7000, by=1)
+
+plot(x=NA, 
+   y=NA, 
+   xlim = c(500, 2000), 
+   ylim = c(0.1, 0.5),
+   xlab = "Mosquito Population",
+   ylab = "yH*")
+
+nM_thing = runif(runs, min=500, max=2000)
+
+for (i in 1:runs)
+{
+  nM = nM_thing[i]
+  params = c(muM = muM,
+             muH = muH,
+             nM = nM,
+             tMH = tMH,
+             tHM = tHM,
+             r = r,
+             gammaH = gammaH)
+  
+  out = ode(y = inits, 
+          times = time_ode, 
+          func = Human_Mosquito_ODE, 
+          method="ode45", # Runge-Kutta 4-5 method
+          parms = params)
+  
+  colnames(out) = c("time", "xM", "yM", "xH", "yH", "zH")
+  out = data.frame(out)
+
+  points(nM, tail(out$yH, n=1), col="black")
+}
+
+```
+
