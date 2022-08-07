@@ -5,4 +5,4 @@ All programming-related coursework from NAU.
 | Course ID | Course Name | Primary Language |
 |---|---|---|
 | CS450  | Introduction to Parallel Programming | C++ |
-| INF414 | Modelling the Spread of Infectious Disease | R |
+| INF414 | Modelling the Spread of Infectious Diseases | R |
