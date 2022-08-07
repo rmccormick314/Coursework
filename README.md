@@ -1,5 +1,5 @@
 # Coursework
-All programming-related coursework from NAU.
+All programming-related coursework from my undergraduate degree at Northern Arizona University.
 
 ## Courses
 | Course ID | Course Name | Primary Language |
