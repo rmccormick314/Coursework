@@ -6,4 +6,4 @@ All programming-related coursework from my undergraduate degree at Northern Ariz
 |---|---|---|
 | CS450 | Introduction to Parallel Programming | C++ |
 | CS480 | Operating Systems | C |
-| INF414 | Modelling the Spread of Infectious Diseases | R / Rmd |
+| INF414 | Modelling the Spread of Infectious Diseases | R |
