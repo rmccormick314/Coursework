@@ -1,0 +1,14 @@
+@font-face {
+  font-family: myFirstFont;
+  src:url(Akronim-Regular.ttf);
+}
+
+h1 {
+  font-family: myFirstFont;
+  color: blue;
+}
+
+p {
+  font-family: myFirstFont;
+  color: blue;
+}
