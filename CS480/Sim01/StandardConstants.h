@@ -15,6 +15,9 @@
 // Constant for comma
 #define COMMA ','
 
+// Constant for period
+#define PERIOD '.'
+
 // Constant for semicolon
 #define SEMICOLON ';'
 

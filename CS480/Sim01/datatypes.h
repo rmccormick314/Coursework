@@ -26,6 +26,15 @@ typedef struct OpCodeTypeStruct
 typedef struct ConfigDataTypeStruct
    {
       char metaDataFileName[ STD_STR_LEN ];
+      int cpuSchedCode;
+      int ioCycleRate;
+      int memAvailable;
+      int logToCode;
+      char logToFileName[ STD_STR_LEN ];
+      bool memDisplay;
+      int procCycleRate;
+      double version;
+      int quantumCycles;
    } ConfigDataType;
 
 #endif // DATATYPES
