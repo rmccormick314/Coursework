@@ -1,0 +1,18 @@
+Start Room Data;
+Bio Sciences, 265, 140;
+Bio Sciences, 413, 30;
+Health & Learning Center, 3101, 65;
+Health & Learning Center, 3113, 70;
+Adel Mathematics Center, 148, 40;
+Eastburn Education, 124, 50;
+Raul H. Castro SBS, 111, 98;
+End Room Data;
+Start Class Data;
+   CS 110, 39;
+   CS 112, 69;
+   CS 136, 61;
+   CS 200, 44;
+   CS 248, 138;
+   CS 301, 95;
+   CS 386, 28;
+End Class Data;

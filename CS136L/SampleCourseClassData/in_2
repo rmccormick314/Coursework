@@ -1,0 +1,14 @@
+Start Room Data;
+Health & Learning Center, 3101, 65;
+Health & Learning Center, 3103, 36;
+Health & Learning Center, 3113, 70;
+Adel Mathematics Center, 147, 46;
+Adel Mathematics Center, 148, 40;
+End Room Data;
+Start Class Data;
+CS 110, 39;
+CS 112, 69;
+CS 136, 61;
+CS 200, 44;
+CS 212, 34;
+End Class Data;
