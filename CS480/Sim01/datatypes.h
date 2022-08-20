@@ -20,7 +20,15 @@ typedef enum { NEW_STATE,
 
 typedef struct OpCodeTypeStruct
    {
-      char hodor[ STD_STR_LEN ];
+      int pid;
+      char command[ STD_STR_LEN ];
+      char inOutArg[ STD_STR_LEN ];
+      char strArg1[ STD_STR_LEN ];
+      int intArg2;
+      int intArg3;
+      double opEndTime;
+
+      struct OpCodeType* nextNode;
    } OpCodeType;
 
 typedef struct ConfigDataTypeStruct

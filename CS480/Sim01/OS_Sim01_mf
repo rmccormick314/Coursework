@@ -4,7 +4,7 @@ CFLAGS = -Wall -std=c99 -pedantic -c $(DEBUG)
 LFLAGS = -Wall -std=c99 -pedantic $(DEBUG)
 
 Simulator : OS_SimDriver.o simulator.o metadataops.o configops.o StringUtils.o
-	$(CC) $(LFLAGS) OS_SimDriver.o simulator.o metadataops.o configops.o StringUtils.o -o sim
+	$(CC) $(LFLAGS) OS_SimDriver.o simulator.o metadataops.o configops.o StringUtils.o -o sim_01
 
 OS_SimDriver.o : OS_SimDriver.c
 	$(CC) $(CFLAGS) OS_SimDriver.c
