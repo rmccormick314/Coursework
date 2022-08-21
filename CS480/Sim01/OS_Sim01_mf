@@ -22,4 +22,4 @@ StringUtils.o : StringUtils.c StringUtils.h
 	$(CC) $(CFLAGS) StringUtils.c
 
 clean:
-	\rm *.o sim
+	\rm *.o sim_01

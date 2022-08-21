@@ -11,7 +11,6 @@ typedef enum { CMD_STR_LEN = 5,
                IO_ARG_STR_LEN = 5,
                STR_ARG_LEN = 15 } OpCodeArrayCapacity;
 
-// Five state
 typedef enum { NEW_STATE,
                READY_STATE,
                RUNNING_STATE,
@@ -28,7 +27,7 @@ typedef struct OpCodeTypeStruct
       int intArg3;
       double opEndTime;
 
-      struct OpCodeType* nextNode;
+      struct OpCodeTypeStruct* nextNode;
    } OpCodeType;
 
 typedef struct ConfigDataTypeStruct
