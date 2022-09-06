@@ -7,4 +7,5 @@ Programming-related coursework from my undergraduate degree at Northern Arizona 
 | CS345 | Principles of Database Systems | Python / SQL |
 | CS450 | Introduction to Parallel Programming | C++ |
 | CS480 | Operating Systems - *Repository available on request* | C |
+| CS499 | Contemporary Developments - Deep Learning | Python |
 | INF414 | Modelling the Spread of Infectious Diseases | R |
