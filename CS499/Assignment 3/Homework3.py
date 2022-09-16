@@ -53,7 +53,7 @@ pipe = make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000))
 class MyKNN():
     def __init__(self, n_neighbors):
         # Initialize the class with number of desired neighbors
-        self.n_neighbors = n_neighbors
+        self.parameter = n_neighbors #named parameter to support modularity
         self.train_features = []
         self.train_labels = []
 
@@ -78,7 +78,7 @@ class MyKNN():
             squared_diff_mat.sum(axis=0) # sum over columns, for each row.
             distance_vec = squared_diff_mat.sum(axis=1) # sum over rows
             sorted_indices = distance_vec.argsort()
-            nearest_indices = sorted_indices[:self.n_neighbors]
+            nearest_indices = sorted_indices[:self.parameter]
 
             # Get the output values for selected neighbors
             for entry_index in nearest_indices:
@@ -96,27 +96,46 @@ class MyCV():
         self.train_features = []
         self.train_labels = []
         self.training_data = None
-        self.estimator = estimator
+
         self.param_grid = param_grid
         self.num_folds = cv
-        self.kf = KFold(n_splits=self.num_folds, shuffle=True, random_state=1)
+        self.estimator = estimator(self.num_folds)
+
         self.best_model = None
 
-    def fit(self, training_data):
+    def fit(self, X, y):
         # Populate internal data structures
-        self.training_data = training_data
-        self.train_features = training_data["X"]
-        self.train_labels = training_data["y"]
+        self.train_features = X
+        self.train_labels = y
+        self.training_data = {'X':self.train_features, 'y':self.train_labels}
 
         # Create a dataframe to temporarily hold results from each fold
         best_paramter_df = pd.DataFrame()
 
+        # Calculate folds
+        fold_indicies = []
+
+        n_folds = self.num_folds
+        fold_vec = np.random.randint(low=0,
+                                     high=self.num_folds,
+                                     size=self.train_labels.size)
+
+        for fold_number in range(self.num_folds):
+            current_fold_indicies = []
+            current_test_indicies = []
+            for index in range(len(self.train_features)):
+                if fold_vec[index] == fold_number:
+                    current_test_indicies.append(index)
+                else:
+                    current_fold_indicies.append(index)
+            fold_indicies.append([current_fold_indicies, current_test_indicies])
+
         # Loop over the folds
-        for foldnum, indicies in enumerate(self.kf.split(self.train_features)):
+        for foldnum, indicies in enumerate(fold_indicies):
             print("(MyCV) Subfold #" + str(foldnum))
 
             # Get indicies of data chosen for this fold
-            index_dict = dict(zip(["train", "test"], indicies))
+            index_dict = dict(zip(["subtrain", "validation"], indicies))
             param_dicts = [self.param_grid]
             set_data_dict = {}
 
@@ -131,22 +150,24 @@ class MyCV():
             results_dict = {}
 
             # Loop over each parameter in the param_grid
-            for parameter in self.param_grid:
+            for parameter_entry in self.param_grid:
+                param_name = list(parameter_entry.keys())[0]
                 # Get current param
-                parameter_cv = list(parameter.items())[0][1][0]
+                param_value = parameter_entry[param_name][0] # unpack list
 
                 # Pass it into estimator for construction
-                estimator = self.estimator(parameter_cv)
+                self.estimator.parameter = param_value
 
                 # Fit fold data to estimator
-                estimator.fit(**set_data_dict["train"])
+                self.estimator.fit(**set_data_dict["subtrain"])
 
                 # Make a prediction of current fold's test data
-                prediction = estimator.predict(set_data_dict["test"]['X'])
+                prediction = \
+                    self.estimator.predict(set_data_dict["validation"]['X'])
 
                 # Determine accuracy of the prediction
-                results_dict[parameter_cv] = \
-                    (prediction == set_data_dict["test"]["y"]).mean()*100
+                results_dict[param_value] = \
+                (prediction == set_data_dict["validation"]["y"]).mean()*100
 
             # Store the results of this fold into dataframe
             best_paramter_df = best_paramter_df.append(results_dict,
@@ -162,9 +183,14 @@ class MyCV():
         self.best_model = best_result
 
     def predict(self, test_features):
-        estimator = self.estimator(self.best_model)
-        estimator.fit(**self.training_data)
-        prediction = estimator.predict(test_features)
+        # Load best model into estimator
+        self.estimator.parameter = self.best_model
+
+        # Fit estimator to training data
+        self.estimator.fit(**self.training_data)
+
+        # Make a prediction of the test features
+        prediction = self.estimator.predict(test_features)
 
         return(prediction)
 
@@ -250,10 +276,10 @@ def main():
             clf.fit(**set_data_dict["train"])
             linear_model.fit(**set_data_dict["train"])
             #my_knn.fit(**set_data_dict["train"])
-            my_cv.fit(set_data_dict["train"])
+            my_cv.fit(**set_data_dict["train"])
 
             # Get most common output from outputs for featureless set
-            most_common_element = mode(output_array)
+            most_common_element = mode(set_data_dict["train"]['y'])
 
             # Get results
             cv_df = pd.DataFrame(clf.cv_results_)
@@ -285,7 +311,7 @@ def main():
     print("\n")
     print(test_acc_df)
 
-    # Plot results 
+    # Plot results
     plot = (p9.ggplot(test_acc_df,
                         p9.aes(x='test_accuracy_percent',
                         y='algorithm'))
