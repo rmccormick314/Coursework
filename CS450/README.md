@@ -1,3 +1,9 @@
 # NAU CS 450 - Introduction to Parallel Programming
-All programs are written in C++ and make use of parallel programming concepts to solve specific problems (these problems can be found in the assignment PDFs).
-All programs are free for educational use, but please do not plagarize my work.
+Flynn's classification, performance measures, paradigms of parallel computing, fundamental techniques to devise-parallel algorithms and programming, and survey of commercial parallel machines.
+|Assignment Number|Topic|Description|
+|:---:|---|---|
+|3|||
+|4|||
+|5|||
+|6|||
+|7|||
