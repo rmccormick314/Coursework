@@ -1,5 +1,5 @@
 # INF 414 - Modelling the Spread of Infectious Diseases
-Coursework related to INF 414, including models which examine various pathogens, including Malaria and COVID-19.
+This course will provide students with a basic understanding of disease modeling. We will derive and simulate fundamental insights about infectious disease dynamics, including the topics of predicting the size of epidemics, understanding disease cycles, and simulating spatially-explicit disease models. Throughout, we will reinforce quantitative insights with biological concepts, computer-based assignments, and relevant readings from the literature.
 
 ## Assignments
 
