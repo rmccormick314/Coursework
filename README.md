@@ -1,7 +1,7 @@
 # Coursework
 Programming-related coursework from my undergraduate degree at Northern Arizona University.
 
-## Courses
+## Upper-Level Coursework
 | Course ID | Course Name | Primary Language |
 |---|---|---|
 | CS345 | Principles of Database Systems | Python / SQL |
