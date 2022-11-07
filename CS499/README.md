@@ -8,3 +8,6 @@ This course covers advanced topics in machine learning, which is the domain of c
 |2|K-Fold Cross Validation|Using tools from SciKit to create Nearest Neighbors and Linear Regression models.|
 |3|Nearest Neighbors|Creating a Nearest Neighbors model from scratch modeled on SciKit tools.|
 |4|Logistic Regression|Creating a Logistic Regression model from scratch modeled on SciKit tools.|
+|6| <-- name --> | |
+|7| <-- name --> | |
+|10| Multi-Class Classification | |
