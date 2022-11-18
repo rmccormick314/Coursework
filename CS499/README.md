@@ -8,6 +8,8 @@ This course covers advanced topics in machine learning, which is the domain of c
 |2|K-Fold Cross Validation|Using tools from SciKit to create Nearest Neighbors and Linear Regression models.|
 |3|Nearest Neighbors|Creating a Nearest Neighbors model from scratch modeled on SciKit tools.|
 |4|Logistic Regression|Creating a Logistic Regression model from scratch modeled on SciKit tools.|
-|6| <-- name --> | |
-|7| <-- name --> | |
-|10| Multi-Class Classification | |
+|6|Torch MLP|Using Torch to create and train neural networks.|
+|7|Auto Differentiation|Creating, training, and building neural networks w/ backpropagation from scratch.|
+|10|Multi-Class Classification|Using Torch to build neural nets for multi-class classification.|
+|11|Regularization|Regularizing networks by training hyper parameters.|
+|12|Optimization|Training with different optimizers to find the highest accuracy.|
