@@ -21,6 +21,8 @@ from sklearn.model_selection import train_test_split
 from statistics import mode
 import inspect
 import warnings
+
+import math
 # <-- END IMPORTS / HEADERS -->
 
 # <-- BEGIN INITIALIZATION -->
@@ -82,6 +84,10 @@ class TorchConvModel(torch.nn.Module):
                        out_channels=64,
                        kernel_size=3,
                        stride=3 ) )
+
+      seq_args.append( torch.nn.ReLU() )
+
+      seq_args.append( torch.nn.MaxPool2d(kernel_size=1, stride=1) )
 
       seq_args.append( torch.nn.ReLU() )
 
@@ -156,7 +162,6 @@ class ConvolutionalMLP:
       units_per_layer.append(n_classes)
 
       feature_tensor = X.reshape(len(X),1,16,16)
-      print(feature_tensor.shape)
 
       ds = CSV( feature_tensor, y )
       dl = torch.utils.data.DataLoader( ds, batch_size = self.batch_size,
@@ -198,7 +203,7 @@ class ConvolutionalMLP:
 
       return pred_vec
 
-class TorchLearnerCV:
+class TorchConvLearnerCV:
    def __init__(self, max_epochs, batch_size, step_size, units_per_layer, **kwargs):
       self.subtrain_learner = ConvolutionalMLP( max_epochs=max_epochs,
                                             batch_size=batch_size,
@@ -393,6 +398,136 @@ class MyCV():
 
         return(prediction)
 
+class OptimizerMLP:
+   def __init__(self, **kwargs):
+      """Store hyper-parameters, TorchModel instance, loss, etc."""
+      kwargs.setdefault("max_epochs", 2)
+      kwargs.setdefault("batch_size", BATCH_SIZE_VAR)
+      kwargs.setdefault("step_size", 0.01)
+      kwargs.setdefault("units_per_layer", ( ncol, 95, 10, 128, 2 ) )
+      kwargs.setdefault("hidden_layers", 3)
+      kwargs.setdefault("opt_name", torch.optim.SGD)
+      kwargs.setdefault("opt_params", {'lr':0.1})
+
+      for key, value in kwargs.items():
+          setattr(self, key, value)
+
+      units_per_layer = [ncol]
+      for L in range(self.hidden_layers):
+          units_per_layer.append(100)
+      units_per_layer.append(n_classes)
+
+      self.best_epoch = -1                    # Best Epoch
+      self.loss_df = pd.DataFrame()           # Dataframe of Loss per Epoch
+
+      self.model = TorchModel(*self.units_per_layer)
+
+      self.optimizer = self.opt_name(self.model.parameters(), **self.opt_params)
+      self.loss_fun = torch.nn.CrossEntropyLoss()
+
+   def take_step(self, X, y):
+      """compute predictions, loss, gradients, take one step"""
+      self.optimizer.zero_grad()
+      pred_tensor = self.model.forward(X)#.reshape(len(y))
+      loss_tensor = self.loss_fun(pred_tensor, y.long())
+      loss_tensor.backward()
+      self.optimizer.step()
+
+   def fit(self, X, y):
+      """Gradient descent learning of weights"""
+      units_per_layer = [ncol]
+      for L in range(self.hidden_layers):
+          units_per_layer.append(100)
+      units_per_layer.append(n_classes)
+
+      ds = CSV( X, y )
+      dl = torch.utils.data.DataLoader( ds, batch_size = self.batch_size,
+                                        shuffle = True )
+      loss_df_list = []
+      best_loss_val = 10000
+
+      for epoch in range(self.max_epochs):
+         for batch_features, batch_labels in dl:
+            self.take_step(batch_features, batch_labels)
+            pred = self.model(batch_features)
+            loss_value = self.loss_fun(pred, batch_labels.long())
+
+            if( loss_value < best_loss_val ):
+                self.best_epoch = epoch
+                best_loss_val = loss_value
+
+         loss_df_list.append(pd.DataFrame({
+             #"set_name":set_name,
+             "loss":float(loss_value),
+             "epoch":epoch,
+         }, index=[0]))#subtrain/validation loss using current weights.
+
+      self.loss_df = pd.concat( loss_df_list )
+
+   def predict(self, X):
+      """Return numpy vector of predictions"""
+      pred_vec = []
+      for row in self.model(torch.from_numpy(X)):
+          best_label = -1
+          highest_prob = -1000
+          itera = 0
+          for iter in row.long():
+              if(iter.item() > highest_prob):
+                  highest_prob = iter.item()
+                  best_label = itera
+              itera += 1
+          pred_vec.append(best_label)
+
+      return pred_vec
+
+class TorchLearnerCV:
+   def __init__(self, max_epochs, batch_size, step_size, units_per_layer, **kwargs):
+      self.subtrain_learner = OptimizerMLP( max_epochs=max_epochs,
+                                            batch_size=batch_size,
+                                            step_size=step_size,
+                                            units_per_layer=units_per_layer )
+
+      for key, value in kwargs.items():
+          setattr(self, key, value)
+
+      self.batch_size = batch_size
+      self.step_size = step_size
+      self.units_per_layer = units_per_layer
+
+      self.plotting_df = pd.DataFrame()
+
+   def fit(self, X, y):
+      """cross-validation for selecting the best number of epochs"""
+      fold_vec = np.random.randint(low=0, high=5, size=y.size)
+      validation_fold = 0
+      is_set_dict = {
+          "validation":fold_vec == validation_fold,
+          "subtrain":fold_vec != validation_fold,
+      }
+
+      set_features = {}
+      set_labels = {}
+
+      for set_name, is_set in is_set_dict.items():
+          set_features[set_name] = X[is_set,:]
+          set_labels[set_name] = y[is_set]
+      {set_name:array.shape for set_name, array in set_features.items()}
+
+      self.subtrain_learner.validation_data = set_features["validation"]
+      self.subtrain_learner.fit( set_features["subtrain"], set_labels["subtrain"], "subtrain" )
+      self.plotting_df = pd.concat([self.plotting_df, self.subtrain_learner.loss_df])
+
+      best_epochs = self.subtrain_learner.best_epoch
+
+      self.train_learner = OptimizerMLP( max_epochs=best_epochs,
+                                         batch_size=self.batch_size,
+                                         step_size=self.step_size,
+                                         units_per_layer=self.units_per_layer )
+      self.train_learner.fit( set_features["validation"], set_labels["validation"], "validation" )
+      self.plotting_df = pd.concat([self.plotting_df, self.train_learner.loss_df])
+
+   def predict(self, X):
+      return self.train_learner.predict(X)
 
 # <-- END INITIALIZATION -->
 
@@ -478,7 +613,7 @@ def main():
             param_dicts = [{'n_neighbors':[x]} for x in range(1, 21)]
             global n_classes
             n_classes = len( np.unique( set_data_dict['test']['y'] ) )
-            UNITS_PER_VAR = ( int(ncol), 1000, 100, int(n_classes) )
+            UNITS_PER_VAR = ( 256, 10, 10, 128, 1 )
 
             param_grid = []
 
@@ -497,7 +632,7 @@ def main():
 
             clf = GridSearchCV(KNeighborsClassifier(), param_dicts)
             linear_model = sklearn.linear_model.LogisticRegressionCV(cv=CV_VAL)
-            DeepTorchCV = MyCV( max_epochs = MAX_EPOCHS_VAR,
+            DeepConvTorchCV = MyCV( max_epochs = MAX_EPOCHS_VAR,
                                 batch_size = BATCH_SIZE_VAR,
                                 step_size = STEP_SIZE_VAR,
                                 units_per_layer = UNITS_PER_VAR,
@@ -505,15 +640,28 @@ def main():
                                 param_grid = param_grid,
                                 num_folds = CV_VAL )
 
+            print(get_n_params(DeepConvTorchCV.estimator.model))
+
+            DeepTorchCV = MyCV( max_epochs = MAX_EPOCHS_VAR,
+                                batch_size = BATCH_SIZE_VAR,
+                                step_size = STEP_SIZE_VAR,
+                                units_per_layer = UNITS_PER_VAR,
+                                estimator = OptimizerMLP,
+                                param_grid = param_grid,
+                                num_folds = CV_VAL )
+
+            print(get_n_params(DeepTorchCV.estimator.model))
+
             # Train the models with given data
             clf.fit(**set_data_dict["train"])
             linear_model.fit(**set_data_dict["train"])
+            DeepConvTorchCV.fit(**set_data_dict["train"])
             DeepTorchCV.fit(**set_data_dict["train"])
 
             # Get most common output from outputs for featureless set
             most_common_element = mode(set_data_dict["train"]['y'])
 
-            buffer_df = DeepTorchCV.plotting_df
+            buffer_df = DeepConvTorchCV.plotting_df
             buffer_df['fold'] = foldnum
             buffer_df['data_set'] = data_set
             final_deep_print_list.append(buffer_df)
@@ -525,6 +673,8 @@ def main():
                 "LogisticRegressionCV": \
                     linear_model.predict(set_data_dict["test"]["X"]),
                 "ConvolutionalMLP": \
+                    DeepConvTorchCV.predict(set_data_dict["test"]["X"]),
+                "DenseMLP": \
                     DeepTorchCV.predict(set_data_dict["test"]["X"]),
                 "Featureless":most_common_element
             }
@@ -605,6 +755,15 @@ def download_data_file(file, file_url, file_path):
             print(error)
     else:
         print("File: " + str(file) + " is already downloaded.\n")
+
+# FUNCTION : DOWNLOAD_DATA_FILE
+#   Description: Downloads file from source, if not already downloaded
+#   Inputs:
+#       - file      : Name of file to download
+#   Outputs: None
+def get_n_params(module):
+    return sum(
+        [math.prod(list(p.shape)) for p in module.parameters()])
 
 # Launch main
 if __name__ == "__main__":
