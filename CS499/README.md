@@ -13,3 +13,4 @@ This course covers advanced topics in machine learning, which is the domain of c
 |10|Multi-Class Classification|Using Torch to build neural nets for multi-class classification.|
 |11|Regularization|Regularizing networks by training hyper parameters.|
 |12|Optimization|Training with different optimizers to find the highest accuracy.|
+|13|Convolutional Neural Nets|Implementing convolutional layers into Torch models.|
