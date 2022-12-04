@@ -1,0 +1,14 @@
+CC = gcc
+DEBUG = -g
+CFLAGS = -Wall -std=c99 -pedantic -c $(DEBUG)
+LFLAGS = -Wall -std=c99 -pedantic $(DEBUG)
+
+proggen : proggen.o
+	$(CC) $(LFLAGS) proggen.o -o proggen
+
+proggen.o : proggen.c proggen.h
+	$(CC) $(CFLAGS) proggen.c
+
+clean:
+	\rm *.o proggen
+

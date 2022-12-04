@@ -1,0 +1,849 @@
+Start Program Meta-Data Code:
+sys start
+app start, 0
+dev in, hard drive, 18
+cpu process, 6
+dev in, video signal, 49
+cpu process, 10
+cpu process, 6
+cpu process, 5
+cpu process, 5
+cpu process, 5
+dev in, keyboard, 80
+cpu process, 5
+cpu process, 9
+cpu process, 10
+cpu process, 9
+cpu process, 5
+cpu process, 5
+cpu process, 8
+dev out, hard drive, 15
+cpu process, 10
+cpu process, 9
+cpu process, 5
+cpu process, 9
+dev out, serial, 20
+cpu process, 5
+dev out, usb, 16
+dev out, video signal, 49
+dev out, video signal, 35
+dev out, video signal, 56
+dev in, hard drive, 27
+cpu process, 8
+dev out, hard drive, 21
+dev out, serial, 24
+cpu process, 5
+dev out, video signal, 49
+dev in, video signal, 70
+cpu process, 6
+cpu process, 6
+dev in, hard drive, 15
+dev out, sound signal, 45
+dev in, video signal, 63
+cpu process, 9
+cpu process, 7
+dev out, hard drive, 24
+cpu process, 9
+dev in, serial, 40
+cpu process, 10
+dev out, video signal, 49
+cpu process, 8
+cpu process, 10
+cpu process, 6
+dev out, monitor, 70
+dev out, monitor, 80
+dev out, hard drive, 30
+cpu process, 7
+cpu process, 8
+cpu process, 8
+cpu process, 5
+dev in, serial, 40
+cpu process, 8
+cpu process, 10
+dev in, keyboard, 50
+dev out, serial, 40
+dev in, hard drive, 30
+cpu process, 6
+dev out, monitor, 90
+dev out, video signal, 49
+dev in, hard drive, 24
+cpu process, 7
+cpu process, 10
+cpu process, 8
+cpu process, 10
+dev in, keyboard, 70
+cpu process, 9
+cpu process, 10
+cpu process, 10
+dev in, video signal, 42
+cpu process, 7
+cpu process, 7
+cpu process, 10
+cpu process, 10
+dev in, keyboard, 100
+dev in, hard drive, 21
+cpu process, 8
+dev in, keyboard, 50
+cpu process, 5
+cpu process, 5
+cpu process, 10
+dev out, video signal, 42
+cpu process, 6
+cpu process, 6
+cpu process, 7
+cpu process, 10
+cpu process, 6
+dev out, serial, 36
+cpu process, 6
+cpu process, 8
+cpu process, 6
+cpu process, 6
+cpu process, 6
+cpu process, 10
+cpu process, 10
+cpu process, 10
+dev out, sound signal, 40
+dev out, sound signal, 50
+cpu process, 7
+cpu process, 7
+cpu process, 8
+cpu process, 7
+cpu process, 6
+cpu process, 6
+cpu process, 8
+dev out, video signal, 56
+cpu process, 9
+cpu process, 6
+dev out, serial, 32
+cpu process, 9
+cpu process, 8
+cpu process, 10
+cpu process, 8
+cpu process, 6
+cpu process, 10
+cpu process, 5
+cpu process, 5
+dev in, hard drive, 30
+dev out, serial, 24
+cpu process, 9
+cpu process, 5
+cpu process, 8
+cpu process, 7
+cpu process, 9
+cpu process, 6
+cpu process, 8
+dev in, video signal, 70
+cpu process, 5
+cpu process, 8
+cpu process, 9
+cpu process, 9
+cpu process, 8
+dev in, video signal, 35
+cpu process, 7
+dev in, serial, 40
+cpu process, 5
+cpu process, 5
+cpu process, 9
+cpu process, 7
+dev out, video signal, 49
+cpu process, 8
+dev in, sound signal, 35
+cpu process, 5
+cpu process, 10
+cpu process, 5
+cpu process, 6
+cpu process, 9
+cpu process, 10
+cpu process, 9
+dev out, monitor, 50
+cpu process, 7
+cpu process, 6
+cpu process, 9
+cpu process, 8
+cpu process, 7
+cpu process, 9
+cpu process, 7
+dev out, monitor, 80
+cpu process, 10
+cpu process, 8
+cpu process, 8
+cpu process, 6
+dev in, serial, 28
+cpu process, 5
+cpu process, 10
+cpu process, 7
+cpu process, 10
+cpu process, 8
+cpu process, 9
+dev in, hard drive, 15
+cpu process, 6
+cpu process, 9
+cpu process, 6
+cpu process, 7
+cpu process, 6
+cpu process, 10
+cpu process, 6
+cpu process, 8
+cpu process, 10
+cpu process, 7
+dev in, video signal, 70
+cpu process, 9
+cpu process, 10
+dev in, usb, 16
+cpu process, 6
+cpu process, 5
+cpu process, 7
+cpu process, 6
+cpu process, 6
+cpu process, 10
+dev out, hard drive, 24
+dev in, video signal, 63
+cpu process, 8
+cpu process, 10
+cpu process, 7
+cpu process, 6
+cpu process, 7
+cpu process, 9
+cpu process, 10
+dev out, serial, 40
+dev out, monitor, 100
+cpu process, 5
+cpu process, 6
+cpu process, 9
+dev in, video signal, 63
+cpu process, 8
+dev in, serial, 32
+cpu process, 5
+cpu process, 10
+cpu process, 5
+cpu process, 9
+cpu process, 7
+dev out, hard drive, 15
+cpu process, 7
+dev in, video signal, 49
+cpu process, 9
+cpu process, 5
+cpu process, 5
+cpu process, 10
+cpu process, 10
+cpu process, 6
+cpu process, 8
+dev out, monitor, 50
+cpu process, 7
+cpu process, 5
+cpu process, 10
+cpu process, 10
+dev out, video signal, 42
+dev out, hard drive, 18
+dev out, hard drive, 15
+cpu process, 7
+dev in, hard drive, 18
+cpu process, 6
+dev out, monitor, 90
+dev in, keyboard, 60
+cpu process, 7
+dev out, monitor, 90
+dev out, serial, 36
+cpu process, 9
+cpu process, 10
+cpu process, 10
+cpu process, 5
+cpu process, 10
+dev out, hard drive, 18
+dev out, sound signal, 40
+cpu process, 6
+cpu process, 8
+cpu process, 10
+dev in, sound signal, 25
+cpu process, 5
+cpu process, 5
+cpu process, 8
+cpu process, 5
+cpu process, 7
+dev out, hard drive, 18
+cpu process, 9
+cpu process, 7
+cpu process, 8
+dev in, hard drive, 21
+dev out, hard drive, 15
+cpu process, 10
+dev out, sound signal, 40
+dev in, sound signal, 35
+cpu process, 9
+cpu process, 6
+cpu process, 9
+dev out, usb, 20
+cpu process, 10
+cpu process, 6
+dev out, video signal, 56
+cpu process, 10
+cpu process, 6
+dev out, hard drive, 30
+cpu process, 8
+dev out, hard drive, 18
+cpu process, 9
+cpu process, 9
+cpu process, 5
+cpu process, 6
+dev out, sound signal, 25
+cpu process, 5
+cpu process, 9
+cpu process, 7
+cpu process, 10
+dev in, keyboard, 60
+cpu process, 8
+dev out, usb, 10
+cpu process, 9
+cpu process, 7
+dev in, hard drive, 27
+cpu process, 6
+cpu process, 7
+cpu process, 10
+cpu process, 10
+cpu process, 8
+cpu process, 10
+cpu process, 7
+cpu process, 8
+cpu process, 10
+dev out, sound signal, 50
+cpu process, 9
+dev out, monitor, 60
+cpu process, 5
+cpu process, 10
+cpu process, 10
+dev out, monitor, 80
+cpu process, 8
+cpu process, 9
+cpu process, 8
+cpu process, 9
+dev out, monitor, 70
+dev out, monitor, 80
+cpu process, 7
+dev in, video signal, 35
+dev in, serial, 40
+cpu process, 10
+cpu process, 7
+dev out, monitor, 70
+cpu process, 10
+cpu process, 5
+cpu process, 5
+cpu process, 9
+dev out, video signal, 35
+cpu process, 7
+cpu process, 5
+cpu process, 6
+cpu process, 8
+dev in, hard drive, 21
+dev out, video signal, 49
+dev out, sound signal, 50
+dev in, hard drive, 15
+dev out, serial, 28
+cpu process, 9
+cpu process, 9
+cpu process, 8
+cpu process, 6
+dev out, video signal, 49
+cpu process, 7
+dev out, usb, 14
+dev in, video signal, 70
+cpu process, 9
+cpu process, 5
+cpu process, 10
+cpu process, 10
+dev out, serial, 36
+dev out, video signal, 56
+cpu process, 7
+cpu process, 9
+dev out, video signal, 63
+dev out, hard drive, 18
+cpu process, 7
+dev out, hard drive, 30
+cpu process, 5
+cpu process, 5
+dev in, sound signal, 40
+cpu process, 10
+dev in, keyboard, 70
+cpu process, 10
+cpu process, 9
+cpu process, 5
+cpu process, 6
+cpu process, 7
+cpu process, 9
+cpu process, 9
+dev out, hard drive, 24
+cpu process, 9
+dev out, video signal, 42
+cpu process, 6
+dev in, usb, 10
+cpu process, 10
+dev in, video signal, 35
+cpu process, 5
+cpu process, 7
+dev out, serial, 36
+dev in, keyboard, 100
+cpu process, 10
+dev out, sound signal, 35
+dev out, serial, 28
+dev out, hard drive, 18
+cpu process, 9
+dev out, hard drive, 30
+cpu process, 6
+cpu process, 5
+cpu process, 10
+cpu process, 5
+cpu process, 6
+dev in, hard drive, 18
+dev out, sound signal, 30
+dev in, keyboard, 50
+cpu process, 9
+cpu process, 7
+cpu process, 6
+dev out, serial, 24
+dev out, monitor, 80
+cpu process, 5
+cpu process, 10
+cpu process, 5
+cpu process, 6
+cpu process, 6
+cpu process, 9
+cpu process, 7
+cpu process, 7
+cpu process, 5
+cpu process, 6
+cpu process, 10
+cpu process, 9
+cpu process, 9
+cpu process, 8
+cpu process, 8
+cpu process, 10
+dev in, video signal, 56
+cpu process, 10
+cpu process, 10
+dev in, keyboard, 80
+cpu process, 9
+app end
+app start, 0
+dev in, video signal, 56
+cpu process, 9
+cpu process, 5
+cpu process, 5
+dev out, hard drive, 21
+cpu process, 10
+cpu process, 9
+cpu process, 6
+cpu process, 7
+dev in, video signal, 49
+dev out, monitor, 90
+cpu process, 10
+cpu process, 9
+dev in, hard drive, 27
+cpu process, 8
+cpu process, 5
+cpu process, 10
+dev out, sound signal, 45
+cpu process, 5
+cpu process, 5
+cpu process, 6
+cpu process, 7
+cpu process, 9
+cpu process, 9
+cpu process, 7
+cpu process, 10
+dev out, video signal, 56
+dev in, hard drive, 27
+dev out, monitor, 80
+cpu process, 7
+cpu process, 5
+cpu process, 8
+cpu process, 5
+dev out, hard drive, 18
+cpu process, 5
+dev out, monitor, 90
+cpu process, 10
+cpu process, 8
+cpu process, 8
+cpu process, 6
+cpu process, 10
+cpu process, 9
+cpu process, 7
+cpu process, 5
+dev in, keyboard, 70
+cpu process, 9
+cpu process, 9
+cpu process, 6
+dev in, video signal, 35
+dev in, video signal, 70
+cpu process, 10
+cpu process, 9
+cpu process, 6
+cpu process, 8
+cpu process, 9
+dev in, hard drive, 21
+cpu process, 9
+dev in, serial, 28
+cpu process, 6
+dev in, hard drive, 27
+cpu process, 6
+dev in, hard drive, 15
+cpu process, 7
+cpu process, 7
+dev out, hard drive, 21
+cpu process, 10
+cpu process, 6
+dev out, monitor, 50
+cpu process, 8
+cpu process, 8
+cpu process, 6
+dev out, sound signal, 30
+cpu process, 5
+cpu process, 9
+dev in, video signal, 49
+dev out, hard drive, 30
+cpu process, 7
+cpu process, 9
+dev out, video signal, 70
+cpu process, 5
+dev out, sound signal, 40
+cpu process, 8
+cpu process, 7
+cpu process, 7
+cpu process, 6
+dev out, usb, 12
+cpu process, 5
+dev out, video signal, 35
+cpu process, 8
+cpu process, 7
+dev out, video signal, 42
+cpu process, 5
+cpu process, 5
+cpu process, 5
+dev out, video signal, 49
+dev in, sound signal, 30
+dev in, hard drive, 21
+cpu process, 9
+dev out, hard drive, 24
+dev out, hard drive, 27
+cpu process, 9
+cpu process, 7
+dev out, hard drive, 24
+cpu process, 10
+cpu process, 9
+cpu process, 8
+cpu process, 5
+cpu process, 9
+cpu process, 7
+cpu process, 9
+cpu process, 6
+cpu process, 10
+dev out, video signal, 42
+dev in, keyboard, 80
+cpu process, 5
+cpu process, 5
+cpu process, 5
+cpu process, 7
+dev in, usb, 20
+dev in, hard drive, 24
+cpu process, 6
+dev in, keyboard, 60
+cpu process, 7
+dev in, hard drive, 18
+dev in, video signal, 42
+cpu process, 9
+dev in, serial, 20
+cpu process, 6
+cpu process, 10
+cpu process, 6
+cpu process, 6
+dev out, serial, 40
+dev out, serial, 28
+dev out, monitor, 100
+dev in, video signal, 56
+cpu process, 8
+cpu process, 5
+cpu process, 10
+cpu process, 5
+cpu process, 5
+dev in, hard drive, 21
+dev out, video signal, 42
+cpu process, 5
+cpu process, 9
+dev in, video signal, 63
+cpu process, 10
+cpu process, 10
+dev in, keyboard, 60
+cpu process, 5
+cpu process, 10
+cpu process, 5
+cpu process, 5
+cpu process, 10
+dev out, sound signal, 45
+cpu process, 6
+cpu process, 7
+cpu process, 5
+dev out, video signal, 35
+cpu process, 9
+dev out, sound signal, 30
+dev out, monitor, 80
+dev out, serial, 36
+cpu process, 9
+cpu process, 7
+cpu process, 6
+cpu process, 10
+dev in, video signal, 63
+cpu process, 10
+cpu process, 8
+cpu process, 9
+cpu process, 9
+cpu process, 8
+cpu process, 9
+cpu process, 5
+cpu process, 8
+cpu process, 8
+dev out, hard drive, 18
+cpu process, 10
+dev out, video signal, 42
+cpu process, 5
+cpu process, 5
+cpu process, 9
+cpu process, 9
+dev out, hard drive, 15
+dev out, monitor, 70
+cpu process, 5
+cpu process, 9
+cpu process, 5
+cpu process, 9
+cpu process, 7
+cpu process, 8
+cpu process, 8
+cpu process, 7
+dev out, usb, 16
+dev out, serial, 20
+cpu process, 7
+cpu process, 9
+cpu process, 6
+cpu process, 7
+dev in, hard drive, 15
+cpu process, 6
+cpu process, 10
+cpu process, 8
+cpu process, 8
+cpu process, 8
+cpu process, 5
+cpu process, 8
+cpu process, 10
+cpu process, 6
+cpu process, 6
+cpu process, 6
+cpu process, 10
+dev in, keyboard, 50
+cpu process, 9
+cpu process, 9
+dev in, video signal, 35
+cpu process, 8
+cpu process, 10
+cpu process, 5
+cpu process, 9
+cpu process, 7
+cpu process, 8
+cpu process, 9
+dev in, usb, 18
+cpu process, 9
+dev in, video signal, 63
+cpu process, 9
+dev in, usb, 20
+cpu process, 6
+cpu process, 6
+dev out, monitor, 100
+cpu process, 10
+cpu process, 5
+dev out, hard drive, 15
+cpu process, 9
+cpu process, 10
+cpu process, 5
+cpu process, 5
+cpu process, 9
+cpu process, 5
+cpu process, 7
+cpu process, 9
+cpu process, 5
+cpu process, 7
+cpu process, 5
+cpu process, 8
+cpu process, 8
+dev out, serial, 24
+dev out, monitor, 50
+dev in, hard drive, 18
+dev in, serial, 40
+cpu process, 5
+dev in, video signal, 70
+cpu process, 8
+dev out, video signal, 49
+cpu process, 8
+cpu process, 10
+cpu process, 10
+cpu process, 6
+dev in, serial, 24
+dev out, video signal, 49
+dev out, hard drive, 24
+dev out, monitor, 60
+cpu process, 9
+cpu process, 8
+dev in, hard drive, 18
+cpu process, 7
+cpu process, 10
+cpu process, 8
+cpu process, 9
+cpu process, 6
+cpu process, 7
+cpu process, 5
+cpu process, 9
+cpu process, 9
+cpu process, 7
+cpu process, 5
+cpu process, 8
+cpu process, 7
+cpu process, 5
+cpu process, 8
+dev out, video signal, 56
+dev out, sound signal, 35
+cpu process, 9
+dev in, video signal, 42
+cpu process, 7
+cpu process, 6
+cpu process, 5
+dev in, sound signal, 25
+cpu process, 7
+cpu process, 9
+cpu process, 5
+dev out, hard drive, 27
+cpu process, 8
+cpu process, 6
+cpu process, 10
+cpu process, 8
+cpu process, 8
+cpu process, 5
+dev in, sound signal, 45
+cpu process, 8
+cpu process, 5
+cpu process, 5
+cpu process, 5
+cpu process, 6
+cpu process, 8
+cpu process, 9
+cpu process, 10
+dev in, hard drive, 18
+cpu process, 5
+cpu process, 7
+dev out, serial, 32
+cpu process, 7
+cpu process, 7
+cpu process, 10
+cpu process, 10
+cpu process, 6
+dev out, monitor, 60
+dev out, video signal, 63
+cpu process, 7
+dev in, serial, 40
+cpu process, 7
+dev out, usb, 18
+cpu process, 7
+cpu process, 6
+cpu process, 8
+cpu process, 10
+dev out, serial, 32
+dev out, monitor, 100
+cpu process, 6
+cpu process, 9
+cpu process, 6
+cpu process, 10
+cpu process, 7
+cpu process, 5
+cpu process, 9
+cpu process, 10
+cpu process, 7
+cpu process, 5
+cpu process, 9
+dev in, hard drive, 15
+cpu process, 10
+dev out, sound signal, 35
+dev out, video signal, 70
+dev out, usb, 14
+cpu process, 5
+cpu process, 10
+dev in, video signal, 49
+cpu process, 6
+dev in, hard drive, 27
+cpu process, 8
+dev out, video signal, 70
+cpu process, 7
+cpu process, 7
+cpu process, 5
+cpu process, 10
+dev in, keyboard, 90
+cpu process, 10
+cpu process, 6
+cpu process, 7
+dev in, sound signal, 40
+dev in, serial, 40
+cpu process, 7
+cpu process, 8
+dev out, sound signal, 50
+cpu process, 6
+cpu process, 6
+cpu process, 8
+cpu process, 8
+cpu process, 8
+cpu process, 9
+cpu process, 7
+cpu process, 10
+cpu process, 9
+cpu process, 9
+cpu process, 9
+dev out, serial, 32
+cpu process, 7
+dev out, sound signal, 35
+dev out, serial, 24
+cpu process, 9
+dev out, sound signal, 30
+cpu process, 8
+cpu process, 5
+cpu process, 9
+dev out, hard drive, 27
+cpu process, 8
+cpu process, 7
+dev out, video signal, 49
+dev out, hard drive, 30
+dev in, video signal, 49
+dev in, keyboard, 80
+cpu process, 5
+dev out, hard drive, 24
+cpu process, 9
+cpu process, 5
+cpu process, 5
+cpu process, 8
+cpu process, 7
+cpu process, 5
+cpu process, 10
+dev out, hard drive, 18
+cpu process, 10
+cpu process, 8
+dev in, keyboard, 80
+cpu process, 8
+cpu process, 9
+cpu process, 9
+cpu process, 8
+cpu process, 8
+dev in, hard drive, 24
+cpu process, 6
+cpu process, 10
+cpu process, 10
+cpu process, 7
+cpu process, 10
+cpu process, 5
+dev in, keyboard, 90
+cpu process, 8
+dev out, hard drive, 21
+app end
+sys end
+End Program Meta-Data Code.
+

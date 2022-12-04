@@ -1,0 +1,119 @@
+Start Program Meta-Data Code:
+sys start
+app start, 0
+dev in, keyboard, 50
+cpu process, 6
+dev out, sound signal, 50
+dev in, usb, 20
+cpu process, 10
+cpu process, 7
+cpu process, 8
+cpu process, 7
+cpu process, 7
+cpu process, 5
+cpu process, 10
+cpu process, 10
+cpu process, 9
+cpu process, 9
+cpu process, 9
+cpu process, 10
+dev in, keyboard, 90
+app end
+app start, 0
+dev in, video signal, 42
+cpu process, 9
+cpu process, 7
+cpu process, 6
+cpu process, 10
+cpu process, 7
+dev in, hard drive, 24
+cpu process, 5
+cpu process, 8
+dev in, video signal, 35
+dev out, hard drive, 18
+cpu process, 7
+dev out, video signal, 63
+cpu process, 8
+cpu process, 7
+cpu process, 6
+dev out, serial, 32
+app end
+app start, 0
+dev in, keyboard, 90
+cpu process, 7
+cpu process, 6
+cpu process, 9
+cpu process, 7
+dev in, sound signal, 35
+cpu process, 10
+dev out, usb, 14
+cpu process, 9
+cpu process, 5
+dev out, monitor, 70
+dev in, serial, 36
+cpu process, 10
+cpu process, 10
+cpu process, 5
+cpu process, 9
+cpu process, 7
+app end
+app start, 0
+dev in, sound signal, 50
+dev out, sound signal, 35
+cpu process, 9
+cpu process, 10
+cpu process, 10
+cpu process, 9
+cpu process, 8
+cpu process, 8
+cpu process, 5
+cpu process, 7
+cpu process, 5
+dev in, keyboard, 80
+cpu process, 5
+cpu process, 7
+cpu process, 9
+cpu process, 9
+cpu process, 9
+app end
+app start, 0
+dev in, hard drive, 27
+cpu process, 10
+cpu process, 6
+cpu process, 6
+cpu process, 9
+cpu process, 5
+cpu process, 9
+dev out, monitor, 100
+cpu process, 7
+cpu process, 9
+dev out, sound signal, 30
+cpu process, 7
+dev in, serial, 24
+dev in, serial, 28
+cpu process, 8
+cpu process, 10
+cpu process, 10
+app end
+app start, 0
+dev in, hard drive, 24
+cpu process, 8
+dev in, sound signal, 40
+cpu process, 5
+cpu process, 7
+cpu process, 10
+cpu process, 9
+cpu process, 6
+cpu process, 7
+cpu process, 5
+cpu process, 9
+dev out, monitor, 90
+dev in, keyboard, 100
+dev out, serial, 20
+dev out, video signal, 49
+cpu process, 6
+cpu process, 8
+app end
+sys end
+End Program Meta-Data Code.
+

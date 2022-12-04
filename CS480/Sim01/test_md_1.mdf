@@ -1,0 +1,161 @@
+Start Program Meta-Data Code:
+sys start
+app start, 0
+dev in, serial, 20
+cpu process, 6
+cpu process, 6
+cpu process, 8
+cpu process, 9
+dev out, monitor, 50
+cpu process, 6
+cpu process, 6
+cpu process, 8
+cpu process, 8
+cpu process, 8
+cpu process, 8
+cpu process, 10
+cpu process, 8
+cpu process, 7
+dev out, video signal, 35
+cpu process, 5
+cpu process, 7
+cpu process, 10
+cpu process, 7
+cpu process, 6
+cpu process, 10
+cpu process, 9
+cpu process, 10
+dev out, video signal, 35
+dev in, hard drive, 30
+cpu process, 6
+dev out, hard drive, 21
+dev in, hard drive, 21
+cpu process, 8
+cpu process, 6
+dev in, video signal, 56
+cpu process, 7
+cpu process, 10
+cpu process, 6
+cpu process, 8
+cpu process, 5
+cpu process, 10
+cpu process, 7
+cpu process, 5
+dev out, monitor, 60
+cpu process, 10
+cpu process, 10
+dev in, serial, 24
+cpu process, 9
+cpu process, 6
+cpu process, 5
+cpu process, 5
+cpu process, 10
+cpu process, 10
+app end
+app start, 0
+dev in, video signal, 42
+cpu process, 6
+cpu process, 10
+cpu process, 7
+cpu process, 7
+cpu process, 9
+cpu process, 9
+cpu process, 7
+dev in, video signal, 63
+cpu process, 7
+cpu process, 10
+cpu process, 5
+dev out, video signal, 63
+cpu process, 6
+cpu process, 8
+dev out, hard drive, 21
+dev in, hard drive, 27
+cpu process, 7
+dev out, hard drive, 21
+cpu process, 10
+cpu process, 7
+dev out, sound signal, 40
+cpu process, 5
+cpu process, 7
+cpu process, 6
+cpu process, 5
+cpu process, 5
+dev out, serial, 32
+dev in, sound signal, 35
+cpu process, 6
+dev out, serial, 28
+cpu process, 7
+dev out, hard drive, 18
+cpu process, 9
+cpu process, 6
+cpu process, 8
+cpu process, 9
+cpu process, 9
+cpu process, 8
+cpu process, 6
+dev in, video signal, 63
+dev out, usb, 20
+cpu process, 9
+dev out, sound signal, 40
+dev in, serial, 36
+cpu process, 7
+cpu process, 5
+cpu process, 10
+cpu process, 6
+cpu process, 8
+app end
+app start, 0
+dev in, sound signal, 35
+cpu process, 6
+cpu process, 5
+cpu process, 6
+cpu process, 5
+dev in, hard drive, 15
+cpu process, 5
+dev out, video signal, 49
+cpu process, 8
+cpu process, 5
+cpu process, 6
+dev in, video signal, 63
+cpu process, 5
+cpu process, 7
+cpu process, 7
+cpu process, 6
+dev out, serial, 24
+dev out, video signal, 56
+cpu process, 5
+cpu process, 8
+cpu process, 7
+cpu process, 6
+dev in, keyboard, 50
+cpu process, 8
+cpu process, 6
+dev in, video signal, 63
+cpu process, 7
+dev out, monitor, 70
+cpu process, 8
+dev out, serial, 36
+cpu process, 10
+dev in, hard drive, 24
+cpu process, 10
+cpu process, 5
+cpu process, 7
+cpu process, 10
+cpu process, 8
+cpu process, 7
+cpu process, 6
+cpu process, 8
+dev in, hard drive, 27
+dev in, video signal, 42
+cpu process, 9
+cpu process, 10
+cpu process, 7
+cpu process, 9
+dev in, video signal, 70
+cpu process, 10
+dev in, video signal, 70
+cpu process, 9
+app end
+sys end
+End Program Meta-Data Code.
+

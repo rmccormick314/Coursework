@@ -1,0 +1,29 @@
+CC = gcc
+DEBUG = -g
+CFLAGS = -Wall -std=c99 -pedantic -c $(DEBUG) -pthread
+LFLAGS = -Wall -std=c99 -pedantic $(DEBUG) -pthread
+
+sim03 : sim03.o metadataops.o configops.o StringUtils.o simulator.o SimTimer.o
+	$(CC) $(LFLAGS) sim03.o simulator.o metadataops.o configops.o SimTimer.o StringUtils.o -o sim03
+
+sim03.o: OS_Sim03.c OS_Sim03.h StringUtils.h StandardConstants.h metadataops.h configops.h
+	$(CC) $(CFLAGS) OS_Sim03.c -o sim03.o
+
+simulator.o : simulator.c simulator.h StringUtils.h StandardConstants.h SimTimer.h
+	$(CC) $(CFLAGS) simulator.c
+
+metadataops.o : metadataops.c metadataops.h StringUtils.h StandardConstants.h
+	$(CC) $(CFLAGS) metadataops.c
+	
+SimTimer.o : SimTimer.c SimTimer.h
+	$(CC) $(CFLAGS) SimTimer.c
+
+configops.o : configops.c configops.h StringUtils.h StandardConstants.h
+	$(CC) $(CFLAGS) configops.c
+
+StringUtils.o : StringUtils.c StringUtils.h StandardConstants.h
+	$(CC) $(CFLAGS) StringUtils.c
+
+clean:
+	\rm *.o
+	\rm sim03

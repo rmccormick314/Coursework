@@ -1,0 +1,9 @@
+CC = gcc
+DEBUG = -g
+LFLAGS = -Wall -std=c99 -pedantic $(DEBUG)
+
+additionProgram_3 : Program_3.c
+	$(CC) $(LFLAGS) Program_3.c -o additionProgram_3
+
+clean:
+	\rm additionProgram_3
