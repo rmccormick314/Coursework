@@ -14,3 +14,4 @@ This course covers advanced topics in machine learning, which is the domain of c
 |11|Regularization|Regularizing networks by training hyper parameters.|
 |12|Optimization|Training with different optimizers to find the highest accuracy.|
 |13|Convolutional Neural Nets|Implementing convolutional layers into Torch models.|
+|14|Super-Computing|Modifying previous homeworks to run on the Monsoon super cluster.|
