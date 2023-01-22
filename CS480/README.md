@@ -1,4 +1,6 @@
 # CS 480 - Operating Systems
+Theory behind operating systems; scheduling, memory management, I/O and concurrency.
+
 All code in this repository is for the Operating System Simulator project for CS 480.<br>
 Please do not copy or redistribute this code without permission.
 
