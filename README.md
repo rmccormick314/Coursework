@@ -1,7 +1,7 @@
 # Coursework
 Programming-related coursework from my undergraduate degree at Northern Arizona University.
 
-## Upper-Level Coursework
+## Upper Division Coursework
 | Course ID | Course Name | Primary Language |
 |---|---|---|
 | CS345 | Principles of Database Systems | Python / SQL |
@@ -10,3 +10,9 @@ Programming-related coursework from my undergraduate degree at Northern Arizona 
 | CS480 | Operating Systems | C |
 | CS499 | Contemporary Developments - Deep Learning | Python |
 | INF414 | Modelling the Spread of Infectious Diseases | R |
+
+## Lower Division Coursework
+| Course ID | Course Name | Primary Language |
+|---|---|---|
+| CS200 | Introduction To Computer Organization | C / ASM |
+| CS136 | Computer Science II | Java |
