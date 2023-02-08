@@ -6,4 +6,4 @@ Flynn's classification, performance measures, paradigms of parallel computing, f
 |4|||
 |5|||
 |6|||
-|7|||
+|7| Optimization | Optimize the given problem to the fastest possible speed. |
