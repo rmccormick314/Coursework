@@ -14,5 +14,5 @@ Programming-related coursework from my undergraduate degree at Northern Arizona 
 ## Lower Division Coursework
 | Course ID | Course Name | Primary Language |
 |---|---|---|
-| CS200 | Introduction To Computer Organization | C / ASM |
+| CS200 | Introduction To Computer Organization | ASM / C |
 | CS136 | Computer Science II | Java |
