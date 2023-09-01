@@ -1,0 +1,60 @@
+---
+title: "STA444 Supplemental 1"
+author: "Richard McCormick"
+date: "9/1/2023"
+geometry: margin=0.5cm
+output: pdf_document
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE, fig.height = 5,  fig.width = 10)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=TRUE}
+plot(pressure)
+title("Pressure vs. Temperature")
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Go back to the “family” data frame you created for assignment 2.
+
+• With one line of code, change the title of all 3 columns to “New Names”, “New Age”
+and “New Height.”  
+• With one line of code, give rows 1 – 4 the names “me”, “myself”, “and”, and “I”. If
+you have fewer than 4 rows, choose the first n of the above labels, where n = the
+number of rows in your data set. If you have more than 4 rows in your data set, only
+rows 1 – 4 need to be re-labled. Note: currently, the rows are labeled “1” , “2”, etc.  
+We are replacing those labels, not renaming the people in your family.  
+• With one row of code, make the age of the 3rd member of your family “112.”  
+
+
+``` {r}
+family <- data.frame(
+  Names = c('Rowy', 'Mom', 'Luke', 'Courtney'),
+  Age   = c(21, 56, 29, 27),
+  Height.in = c(76, 85, 68, 73) 
+)
+
+colnames(family) <- c('New Names', 'New Age', 'New Height')
+
+rownames(family) <- c('me', 'myself', 'and', 'I')
+
+family[3, 2] = 112
+
+family
+```

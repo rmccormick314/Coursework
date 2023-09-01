@@ -1,0 +1,36 @@
+---
+title: "STA444 Assignment 1"
+author: "Richard McCormick"
+date: "8/28/2023"
+output: pdf_document
+---
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Excercise 1
+
+Calculate log(6.2) first using base e and second using base 10.
+
+```{r}
+log( 6.2, base = exp( 1 ) )
+log( 6.2, base = 10 )
+```
+
+## Excercise 2
+
+Calculate the square root of 2 and save the result as the variable named sqrt2. Have R display the decimal value of sqrt2.
+
+```{r}
+sqrt2 = sqrt( 2 )
+sqrt2
+```
+## Excercise 3
+a. Install the package Sleuth3 on your computer using RStudio.
+b. Load the package using the library() command.
+c. Print out the dataset case0101.
+```{r}
+library( "Sleuth3" )
+case0101
+```

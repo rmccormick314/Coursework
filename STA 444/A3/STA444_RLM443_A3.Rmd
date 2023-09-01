@@ -1,0 +1,25 @@
+---
+title: "STA 444 Assignment 3"
+author: "Richard McCormick"
+date: "8/30/2023"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+```{r}
+
+```
+
+## Including Plots
+
+
+```{r}
+plot(pressure)
+```
+

@@ -9,7 +9,8 @@ Programming-related coursework from my undergraduate degree at Northern Arizona 
 | CS450 | Introduction to Parallel Programming | C++ |
 | CS480 | Operating Systems | C |
 | CS499 | Contemporary Developments - Deep Learning | Python |
-| INF414 | Modelling the Spread of Infectious Diseases | R |
+| INF414 | Modelling the Spread of Infectious Diseases | R Markdown |
+| STA444 | Introduction to R | R Markdown |
 
 ## Lower Division Coursework
 | Course ID | Course Name | Primary Language |
