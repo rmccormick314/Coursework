@@ -1,5 +1,6 @@
 # NAU CS 450 - Introduction to Parallel Programming
 Flynn's classification, performance measures, paradigms of parallel computing, fundamental techniques to devise-parallel algorithms and programming, and survey of commercial parallel machines.
+  
 |Assignment Number|Topic|Description|
 |:---:|---|---|
 |3| Programming with PT Threads | Generate and order a sequence in parallel with PT threads. |
