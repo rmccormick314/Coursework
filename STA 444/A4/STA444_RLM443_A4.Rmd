@@ -1,0 +1,118 @@
+---
+title: "STA 444 Exercise 4"
+author: "Richard McCormick"
+date: '2023-09-11'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+## 1. The dataset ChickWeight tracks the weights of 48 baby chickens (chicks) feed four different diets. Feel free to complete all parts of the exercise in a single R pipeline at the end of the problem.
+
+### a. Load the dataset using
+
+```{r}
+data("ChickWeight")
+```
+
+### b. Look at the help files for the description of the columns.
+
+```{r}
+?ChickWeight
+```
+
+
+### c. Remove all the observations except for observations from day 10 or day 20. The tough part in this instruction is distinguishing between “and” and “or.” Obviously there are no observations that occur from both day 10 AND day 20. Google ‘R logical operators’ to get an introduction to those, but the short answer is that and is & and or is |.
+
+```{r}
+observedChickWeight = ChickWeight[ChickWeight$Time==10 | ChickWeight$Time==20,]
+
+summary(observedChickWeight)
+```
+
+
+### d. Calculate the mean and standard deviation of the chick weights for each diet group on days 10 and 20.
+
+```{r}
+observedChickWeight %>% 
+  group_by(Time,Diet) %>%
+  summarize(mean.Weight=mean(weight),
+            stddev.Weight=sd(weight))
+```
+
+## 2. The OpenIntro textbook on statistics includes a data set on body dimensions. Instead of creating an R chunk for each step of this problem, create a single R pipeline that performs each of the following tasks.
+
+### a. Load the file using
+
+```{r}
+Body <- read.csv('http://www.openintro.org/stat/data/bdims.csv')
+```
+
+### b. The column sex is coded as a 1 if the individual is male and 0 if female. This is a non-intuitive labeling system. Create a new column sex.MF that uses labels Male and Female. Use this column for the rest of the problem. Hint: The ifelse() command will be very convenient here. It functions similarly to the same command in Excel.
+
+```{r}
+Body <- Body %>%
+  mutate(
+    MF = if_else(sex == '1', 'M', 'F')
+  )
+```
+
+### c. The columns wgt and hgt measure weight and height in kilograms and centimeters (respectively). Use these to calculate the Body Mass Index (BMI) for each individual where
+$$
+BMI = \frac{Weight (kg)}{[Height(m)]^2}
+$$
+
+```{r}
+Body <- Body %>%
+  mutate(
+    BMI = wgt / ((hgt/100)^2)
+  )
+```
+
+### d. Double check that your calculated BMI column is correct by examining the summary statistics of the column (e.g. summary(Body)). BMI values should be between 18 to 40 or so. Did you make an error in your calculation?
+
+```{r}
+summary(Body)
+```
+
+### e. The function cut takes a vector of continuous numerical data and creates a factor based on your given cut-points.
+
+```{r}
+# Define a continuous vector to convert to a factor
+x <- 1:10
+
+# divide range of x into three groups of equal length
+cut(x, breaks=3)
+```
+```{r}
+# divide x into four groups, where I specify all 5 break points 
+cut(x, breaks = c(0, 2.5, 5.0, 7.5, 10))
+```
+```{r}
+# (0,2.5] (2.5,5] means 2.5 is included in first group
+# right=FALSE changes this to make 2.5 included in the second  
+
+# divide x into 3 groups, but give them a nicer
+# set of group names
+cut(x, breaks=3, labels=c('Low','Medium','High'))
+```
+
+Create a new column of in the data frame that divides the age into decades (10-19, 20-29, 30-39, etc). Notice the oldest person in the study is 67.
+
+```{r}
+Body <- Body %>%
+  mutate( Age.Grp = cut(age,
+                        breaks=c(10,20,30,40,50,60,70),
+                        right=FALSE))
+```
+
+### f. Find the average BMI for each Sex.MF by Age.Grp combination.
+
+```{r}
+Body %>% 
+  group_by(MF, Age.Grp) %>%
+  summarize(mean.BMI = mean(BMI))
+```
