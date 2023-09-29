@@ -1,7 +1,7 @@
 # Coursework
-This repository contains programming-related coursework from my undergraduate degree(s) at Northern Arizona University.  
-I created it in order to share my learning journey, and to possibly assist those who are starting out on their own.  
-All code in this repository is free for use by anyone, under the single exception that it is not to be used to violate rules of Academic Integrity.  
+This repository contains programming-related coursework from my undergraduate degree(s) at Northern Arizona University.
+I created it in order to share my learning journey, and to possibly assist those who are starting out on their own.
+All code in this repository is free for use by anyone, under the single exception that it is not to be used to violate rules of Academic Integrity.
 There are many projects spanning half a dozen different programming langauges contained within.
 
 ## Upper Division Coursework
