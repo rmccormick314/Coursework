@@ -1,0 +1,145 @@
+---
+title: 'STA 141 Worksheet 8'
+author: 'Richard McCormick'
+date: 'November 7, 2023'
+output: pdf_document
+classoption: dvipsnames
+fontsize: 12pt
+geometry: margin=1.25cm
+header-includes:
+   - \usepackage{amssymb}
+   - \let\rmarkdownfootnote\footnote%
+   - \def\footnote{\protect\rmarkdownfootnote}
+   - \usepackage{titling}
+   - \setlength{\droptitle}{-2em}
+   - \pretitle{\vspace{\droptitle}\centering\huge}
+   - \posttitle{\par}
+   - \preauthor{\centering\large}
+   - \postauthor{\par}
+   - \predate{\centering\large}
+   - \postdate{\par}
+---
+
+# \color{Blue} \textbf{Due Date: Thursday, November 16, 2023 before 11:00am.}
+
+## Instructions
+\color{Black}
+Worksheets must be turned in as a PDF file through Canvas. The worksheet is worth a total of \textbf{15 points}, which is 3 percent of your overall grade.
+
+## \color{Blue} Exercises
+
+Begin by running the following code block to add the packages we need to use to our library.
+```{r libraries, include=FALSE}
+library(tidyverse)
+library(Stat2Data)
+library(ggcorrplot)
+```
+
+### \color{Blue} Exercise 1
+
+\color{Dandelion} \textbf{(a)} \color{Black} This question will use the `MouseBrain` dataset from the `Stat2Data` package.
+
+```{r}
+data("MouseBrain")
+my.mice <- MouseBrain
+```
+Use the help documents and commands we've learned to understand what is being shown in the dataset. Describe the data in one or two sentences below:
+
+The data appears to be a long dataset showing behavior in mice. The number of social contacts, the sex, and the genotype of each mouse make up a row, with each column describing one of these categories.
+
+\color{Dandelion} \textbf{(b)} \color{Black} Create a boxplot of the `Contacts` variable.
+
+```{r}
+ggplot( data=my.mice, aes( x=Contacts ) ) +
+  geom_boxplot()
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} Change the orientation so that we have a vertical boxplot.
+
+Note: to remove all the unnecessary ticks and marks add the following to the end of your command
+` + theme(axis.ticks.x = element_blank(), axis.text.x = element_blank())`.
+
+```{r}
+ggplot( data=my.mice, aes( y=Contacts ) ) +
+  geom_boxplot() + 
+  theme(axis.ticks.x = element_blank(), axis.text.x = element_blank())
+```
+
+
+\color{Dandelion} \textbf{(d)} \color{Black} Use a boxplot to compare the social contacts of Female and Male mice.
+
+`Note: If you add an argument width={value} inside your geom_histogram() function it will adjust the width of the box(es)`.
+
+```{r}
+ggplot( data=my.mice, aes( x=Contacts ) ) +
+  geom_boxplot( aes( group_by=Sex, fill=Sex ) )
+```
+
+\color{Dandelion} \textbf{(e)} \color{Black} Is the median number of contacts of Female or Male mice greater? Calculate the medians using `group_by` and `summarize` to find the difference.
+
+The median number of contacts is slightly higher for Male mice over Female mice.
+
+```{r}
+my.mice %>%
+  group_by( by=Sex ) %>%
+  summarize( Median.Contacts=median( Contacts ) )
+```
+
+\color{Dandelion} \textbf{(f)} \color{Black} Which Genotype has the highest mean number of social contacts? Use a bar graph to verify your answer.
+
+The 'mixed' genotype had the highest number of average contacts, followed closely by the Plus genotype. Minus genotypes had the lowest overall number of average contacts.
+
+```{r}
+mean.mice <- my.mice %>%
+  group_by( by=Genotype ) %>%
+  summarize( Mean.Contacts=mean( Contacts ) )
+
+ggplot( data=mean.mice, aes( x=by, y=Mean.Contacts ) ) +
+  geom_bar( stat='identity' ) +
+  labs( title="Mean Contacts by Genotype", x="Genotype", y="Average Contacts" )
+```
+
+### \color{Blue} Exercise 2
+
+This question will use the $\mathtt{HousesNY}$ dataset from the $\mathtt{Stat2Data}$ package. 
+
+```{r}
+data("HousesNY")
+my.houses <- HousesNY
+```
+
+The question will also require the use of the `ggcorrplot` package. You will need to run `install.packages("ggcorrplot")` before doing anything else.
+
+\color{Dandelion} \textbf{(a)} \color{Black} Find the correlation between each pair of numerical variables and create a correlation plot using the `ggcorrplot()` function.
+
+```{r}
+houses.corr <- cor( my.houses )
+
+ggcorrplot( houses.corr )
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} Work out how to add a `hc.order = TRUE` argument to command above. This should order the variables by their correlation.
+
+```{r}
+ggcorrplot( houses.corr, hc.order=TRUE)
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} Is the size of the house and its price correlated in NYC? What about the size of the lot and its price?
+
+The size of a house is moderately correlated to its price. On the other hand, the size of the lot is almost completely uncorrelated to its price.
+
+\color{Dandelion} \textbf{(d)} \color{Black} Create a bar chart of the mean price of a house against the number of bedrooms in NYC. Note that you will need to make number of bedrooms a factor, if you haven't already.
+
+```{r}
+my.houses$Beds <- as.factor( my.houses$Beds )
+
+my.houses.mean <- my.houses %>%
+  group_by( Beds ) %>%
+  summarize( mean.Price = mean( Price ) )
+
+ggplot( data=my.houses.mean, aes( x=Beds, y=mean.Price ) ) +
+  geom_bar( stat='identity' ) + 
+  labs( title="Mean Home Price by Number of Bedrooms",
+        x="Number of Bedrooms", y="Mean Sale Price" )
+```
+

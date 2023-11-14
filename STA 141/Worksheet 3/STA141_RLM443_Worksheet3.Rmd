@@ -1,0 +1,216 @@
+---
+title: 'STA 141 Worksheet 3'
+author: 'Richard McCormick'
+date: 'September 21, 2023'
+output: pdf_document
+classoption: dvipsnames
+fontsize: 12pt
+geometry: margin=1.25cm
+header-includes:
+   - \usepackage{amssymb}
+   - \let\rmarkdownfootnote\footnote%
+   - \def\footnote{\protect\rmarkdownfootnote}
+   - \usepackage{titling}
+   - \setlength{\droptitle}{-2em}
+   - \pretitle{\vspace{\droptitle}\centering\huge}
+   - \posttitle{\par}
+   - \preauthor{\centering\large}
+   - \postauthor{\par}
+   - \predate{\centering\large}
+   - \postdate{\par}
+---
+
+# \color{Blue} \textbf{Due Date: Thursday, September 28, 2023 before 11:00am.}
+
+## Instructions
+\color{Black}
+Worksheets must be turned in as a PDF file through Canvas. The worksheet is worth a total of \textbf{15 points}, which is 3 percent of your overall grade.
+
+## \color{Blue} Exercises
+
+Begin by running the following code block to add the packages we need to use to our library.
+```{r libraries, include=FALSE}
+library(ggplot2)
+```
+
+### \color{Blue} Exercise 1
+
+\color{Dandelion} \textbf{(a)} \color{Black} The first dataset we are going to work with comes built-in with the $\mathtt{tidyverse}$ package. Run the following to save a copy of the $\mathtt{midwest}$ dataset to a variable called $\mathtt{my.midwest}$.
+```{r}
+my.midwest <- midwest
+```
+
+The first thing we want to do is to create a bar chart for the $\mathtt{state}$ variable. Use the following code block to check if this variable is categorical or numerical. If it is not categorical convert it so that we can use it for our bar chart.
+
+```{r}
+class( my.midwest$state )
+my.midwest$state <- as.factor( my.midwest$state )
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} According to this data, how many states are there in the midwest? You should be able to write something that displays this answer.
+```{r}
+str( my.midwest$state )
+```
+According to this data, there are 5 states in the Midwest.
+
+\color{Dandelion} \textbf{(c)} \color{Black} We'll start by making a frequency distribution table. See if you can work out how to use the $`table()`$ function. If necessary you can run `?table` in the console to see the help documents.
+```{r}
+table( my.midwest$state )
+```
+
+\newpage
+
+\color{Dandelion} \textbf{(d)} \color{Black} Now use the next code block to see if you can create a bar graph for $\mathtt{state}$:
+```{r}
+state_bar_plot <- ggplot( data=my.midwest ) +
+  geom_bar( aes( x=state ) )
+
+state_bar_plot
+```
+
+\newpage
+
+\color{Dandelion} \textbf{(e)} \color{Black} Starting with the graph above, change the color of the bars using `fill=` inside the `geom_bar()` function.
+```{r}
+state_bar_plot <- ggplot( data=my.midwest ) + 
+  geom_bar( aes( x=state ), fill='skyblue2' )
+
+state_bar_plot
+```
+\newpage
+
+\color{Dandelion} \textbf{(f)} \color{black} The next thing we might want to do to our bar chart is to make the $y$-axis a proportion rather than a count. We can do this using the $y$-axis aesthetic. Here we can tell $\mathbb{R}$ that we want to use the count of the levels ($\mathtt{after_stat( count )}$) and divide it by the total number, or the sum of the counts ($\mathtt{sum(after_stat( count ))}$). Plot a bar chart of the `state` variable with proportions on the `y-axis` below. Change the label on the `y-axis` to say proportion too.
+```{r}
+state_bar_plot <- ggplot( data=my.midwest ) +
+  geom_bar( aes( x=state, y=after_stat( count )/sum(after_stat( count )) ), 
+            fill='skyblue2' ) +
+  labs( y="Proportion", x="State", title="Proportion by State" )
+
+state_bar_plot
+```
+
+\color{Dandelion} \textbf{(g)} \color{black} Often when we are doing modeling problems in data science, it is preferable to have approximately the same number of observations from each class in the response variable. If `state` were our response variable, do we have an even distribution across levels of the variable?
+
+# The distribution of state is not equally distributed. While from a very generous perspective, we might be able to say they are roughly equal, there are significant differences between the frequency of levels.
+
+\newpage
+
+\color{Dandelion} \textbf{(h)} \color{black} Finally, it's good to know how to reorder the levels on the $x$-axis. We can do this by redefining the variable as a factor and then giving the order we would like them to be displayed in (as a vector using `c()` - any time we want to use a list or vector of data in $\mathbb{R}$ we use this function). Reproduce the plot from `(f)` but reorder the levels in any way that you see fit.
+```{r}
+my.midwest$state <- as.factor( my.midwest$state )
+my.midwest$state <- factor( my.midwest$state, 
+                            levels=c( "WI", "OH", "MI", "IN", "IL" ) )
+
+state_bar_plot <- ggplot( data=my.midwest ) +
+  geom_bar( aes( x=state, y=after_stat( count )/sum(after_stat( count )) ), 
+            fill='skyblue2' ) +
+  labs( y="Proportion", x="State", title="Proportion by State" )
+
+state_bar_plot
+```
+\newpage
+
+\color{Dandelion} \textbf{(i)} \color{black} Now let's turn our attention to histograms. Using the same dataframe, create a histogram of the percentage of adults who have a college degree (the `percollege` variable). Fill the histogram with a color of your choice.
+```{r}
+histogram <- ggplot( data=my.midwest ) +
+  geom_histogram( aes( x=percollege ), fill='skyblue2' ) +
+  labs( x="Percentage of College Educated Adults", y="Proportion", 
+        title="Proportion of Adults w/ College Education" )
+
+histogram
+```
+\newpage
+
+\color{Dandelion} \textbf{(j)} \color{black} Using the histogram from `(i)` as a starting point, change the bin width to 1 (how to do this was shown in the lecture slides).
+```{r}
+histogram <- ggplot( data=my.midwest ) +
+  geom_histogram( aes( x=percollege ), fill='skyblue2', binwidth=1 ) +
+  labs( x="Percentage of College Educated Adults", y="Proportion", 
+        title="Proportion of Adults w/ College Education" )
+
+histogram
+```
+\newpage
+
+\color{Dandelion} \textbf{(k)} \color{black} We can also change the number of bins, rather than the bin width. See if you can modify your histogram from `(j)` to have only 5 bins.
+```{r}
+histogram <- ggplot( data=my.midwest ) +
+  geom_histogram( aes( x=percollege ), fill='skyblue2', bins=5 ) +
+  labs( x="Percentage of College Educated Adults", y="Proportion", 
+        title="Proportion of Adults w/ College Education" )
+
+histogram
+```
+\newpage
+
+\color{Dandelion} \textbf{(l)} \color{black} Finally, try to create a pie chart of the `state` variable using the code given to you in the lecture slides.
+```{r}
+histogram <- ggplot( data=my.midwest,
+                     mapping=aes( x="", 
+                                  y=after_stat( count )/sum( after_stat( count ) ),
+                                  fill=state ) ) +
+  geom_bar() +
+  coord_polar( theta="y" ) +
+  labs(x="", y="", fill="State", title="Proportion of States" ) +
+  theme( axis.line=element_blank(),
+         axis.ticks=element_blank() )
+
+histogram
+```
+\newpage
+
+### \color{Blue} Exercise 2
+
+\color{Dandelion} \textbf{(a)} \color{Black} The Motor Trend Car Road Tests dataset is also built-in to $\mathbb{R}$. Save a copy of the dataset (called `mtcars`) as `my.cars`, in the same way we did in 1(a).
+```{r}
+my.cars <- mtcars
+```
+
+Don't forget that for any of the following questions you can find out more about the data by looking at the help documents in the help window on the right!
+
+\color{Dandelion} \textbf{(b)} \color{Black} Create a bar graph showing the number of v-shaped and straight engines in the data.
+```{r}
+bar_graph <- ggplot( data=my.cars ) +
+  geom_bar( aes( x=vs ) ) +
+  labs( x="V-Shaped and Straight Engines", y="Proportion of Cars", 
+        title="Proportion of V-Shaped vs. Straight Engines in Cars" )
+
+bar_graph
+```
+\newpage
+
+\color{Dandelion} \textbf{(c)} \color{Black} Change the plot from part `(b)` to make the y axis a proportion, add a label to the $y$-axis that says `Proportion of cars`, and change the color of the bars to a color of your choice.
+```{r}
+bar_graph <- ggplot( data=my.cars ) +
+  geom_bar( aes( x=vs, y=after_stat( count )/sum( after_stat( count ) ) ), 
+            fill='skyblue2' ) +
+  labs( x="V-Shaped and Straight Engines", y="Proportion of Cars", 
+        title="Proportion of V-Shaped vs. Straight Engines in Cars" )
+
+bar_graph
+```
+\newpage
+
+\color{Dandelion} \textbf{(d)} \color{Black} If `vs` was our response variable would we have an approximately even distribution between levels?
+```{r}
+bar_graph <- ggplot( data=my.cars ) +
+  geom_histogram( aes( x=vs, y=after_stat( count )/sum( after_stat( count ) ) ), 
+                  fill='skyblue2', bins=2 ) +
+  labs( y="Proportion of Cars" )
+
+bar_graph
+```
+
+# The distribution between the two levels do not appear to be evenly distributed. There is a significant difference between the two levels, although they are relatively close, within 15%.
+
+\newpage
+
+\color{Dandelion} \textbf{(e)} \color{Black} Create a histogram of the variable that represents engine size. Use a binwidth of 100, change the color of the bars to `pink2`, and change the color of the borders of the bars to black.
+```{r}
+bar_graph <- ggplot( data=my.cars ) +
+  geom_histogram( aes( x=disp, y=after_stat( count )/sum( after_stat( count ) ) ),
+            fill='pink2', binwidth=100, color='black' ) +
+  labs( y="Proportion of Cars", x="Displacement", title="Displacement of Car Engines" )
+
+bar_graph
+```

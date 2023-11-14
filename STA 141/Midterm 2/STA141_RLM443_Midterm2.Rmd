@@ -1,0 +1,149 @@
+---
+title: "STA141 Midterm Exam 2"
+author: "Richard McCormick"
+date: "2023-04-21"
+output:
+  pdf_document: default
+  word_document: default
+classoption: dvipsnames
+---
+
+**_INSTRUCTIONS:_** You may use any materials available, including your notes, textbook, and online information. If any information is used, details must be given on what was used and how it works.
+
+Please prepare your solutions using the RMD file provided.  You may change options to suit your style, but be sure to keep the document organized. *Justify all free response answers. Type solutions after each prompt and try to keep your PDF organized.*
+
+Please submit your exam as an organized PDF document directly from RMD. The solutions should be presented in the order the questions were asked.  If there are problems with your PDF you will be asked to resubmit. Organization, clarity and correct preparation of solutions will be worth **5 points**.
+
+This exam is worth a total of 100 points, which is 20 percent of you overall grade for this course.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, echo = TRUE)
+library(tidyverse)
+library(Stat2Data)
+```
+
+\color{Blue}
+# Question 1 (40 points)
+\color{Black}
+
+The file `Sacramento.csv` contains house and sale price data for 932 homes in Sacramento CA.
+
+\color{Dandelion} \textbf{(a)} \color{black} Import the data from the csv file provided.
+```{r}
+sacramento.data <- read_csv( 'Sacramento.csv' )
+```
+
+\color{Dandelion} \textbf{(b)} \color{black} Create a boxplot showing the distribution of the sale price against each type of home (there should be multiple boxes on the one plot).
+```{r}
+ggplot( data=sacramento.data, aes( x=type, y=price ) ) +
+  geom_boxplot() +
+  labs( title="Property Price by Type", x="Property Type", y="Sale Price" )
+```
+
+\color{Dandelion} \textbf{(c)} \color{black} How much cheaper is the median Condo price than the median Multi-family home price?
+```{r}
+median.price <- sacramento.data %>%
+  group_by( type ) %>%
+  summarize( median( price ) )
+
+median.price
+
+print( "The median Condo price is $94,250 cheaper than the median Multi-Family home." )
+```
+
+\color{Dandelion} \textbf{(d)} \color{black} The boxplot for Condos appears to have outliers. What price is the upper threshold for an outlier in this case? How many condos were sold for a value that is greater than this?
+```{r}
+condo.data <- sacramento.data[sacramento.data$type=="Condo",] 
+
+upper.thresh <- quantile( condo.data$price )[4] + (1.5 * IQR( condo.data$price ))
+
+print( paste( "The upper threshold for outliers for Condo price is: $", upper.thresh ) )
+
+print( paste( "The number of Condos sold for MORE than the upper theshold is:", 
+              sum( condo.data$price > upper.thresh ) ) )
+```
+
+\color{Dandelion} \textbf{(e)} \color{black} The boxplot for residential homes also has outliers. What is the difference between the mean and median price of a residential home?
+```{r}
+median.price
+
+mean.price <- sacramento.data %>%
+  group_by( type ) %>%
+  summarize( mean( price ) )
+
+mean.price
+
+print( "The price difference between median and mean sales price for a residential home is $3,284.7")
+```
+
+\color{Dandelion} \textbf{(f)} \color{black} Plot a bar chart showing the mean price of a home against the type of home.
+```{r}
+mean.house <- sacramento.data %>%
+  group_by( by=type ) %>%
+  summarize( mean.price=mean( price ) )
+
+ggplot( data=mean.house, aes( x=by, y=mean.price ) ) +
+  geom_bar( stat='identity' ) +
+  labs( title="Mean House Price by Type", x="Type", y="Mean Price" )
+```
+
+\color{Blue}
+# Question 2 (20 points)
+\color{Black}
+
+The Systolic blood pressures of adults, in the appropriate units, are normally distributed with a mean of 128.4 and a standard deviation of 19.6. We are going to use this to simulate and analyze a population of adults.
+
+The following code block with create a random sample to simulate a fictional city of 50,000 people. Run the following code block and then answer the questions below using this data.
+
+```{r}
+my.population <- data_frame(bp=rnorm(50000, mean=128.4, sd=19.6))
+```
+
+\color{Dandelion} \textbf{(a)} \color{black} Find the mean Blood Pressure of your city.
+```{r}
+print( paste( "Mean blood pressue is:", mean( my.population$bp ) ) )
+```
+
+\color{Dandelion} \textbf{(b)} \color{black} Plot a histogram of the population's Blood Pressure using a binwidth of 5 units.
+```{r}
+ggplot( data=my.population ) +
+  geom_histogram( aes( x=bp ), binwidth=5 ) +
+  labs( title="Blood Pressure in My City", x="Blood Pressure", y="Count" )
+```
+
+\color{Dandelion} \textbf{(c)} \color{black} High Blood Pressure is defined as having a Systolic Blood Pressure above 130. What percentage of your city's population has High Blood Pressure?
+```{r}
+high.bp <- ( sum( my.population$bp > 130 ) / 50000 ) * 100
+
+print( paste( "The proportion of my city's population with high blood pressure is:", 
+              high.bp, "%" ) )
+```
+
+
+\color{Blue}
+# Question 3 (40 points)
+\color{Black}
+
+The file `basketball.csv` shows the total points scored by selected NBA teams during the last week.
+
+\color{Dandelion} \textbf{(a)} \color{black} Import the data from the csv file provided.
+```{r}
+basketball.data <- read_csv( 'basketball.csv' )
+```
+
+\color{Dandelion} \textbf{(b)} \color{black} This data is in the wide format. Use `pivot_longer` to convert it to the long format.
+```{r}
+basketball.long <- pivot_longer( basketball.data,
+                                 cols=2:5,
+                                 values_to = "Points",
+                                 names_to = "Game" )
+
+basketball.long
+```
+
+\color{Dandelion} \textbf{(c)} \color{black} Find the mean number of points for each team in this period.
+```{r}
+basketball.long %>%
+  group_by( Team ) %>%
+  summarize( mean( Points ) )
+```

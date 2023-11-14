@@ -1,0 +1,224 @@
+---
+title: 'STA 141 Worksheet 4'
+author: 'Richard McCormick'
+date: 'September 28, 2023'
+output: pdf_document
+classoption: dvipsnames
+fontsize: 12pt
+geometry: margin=1.25cm
+header-includes:
+   - \usepackage{amssymb}
+   - \let\rmarkdownfootnote\footnote%
+   - \def\footnote{\protect\rmarkdownfootnote}
+   - \usepackage{titling}
+   - \setlength{\droptitle}{-2em}
+   - \pretitle{\vspace{\droptitle}\centering\huge}
+   - \posttitle{\par}
+   - \preauthor{\centering\large}
+   - \postauthor{\par}
+   - \predate{\centering\large}
+   - \postdate{\par}
+---
+
+# \color{Blue} \textbf{Due Date: Thursday, October 12, 2023 before 11:00am.}
+
+## Instructions
+\color{Black}
+Worksheets must be turned in as a PDF file through Canvas. The worksheet is worth a total of \textbf{15 points}, which is 3 percent of your overall grade.
+
+## \color{Blue} Exercises
+
+Begin by running the following code block to add the packages we need to use to our library.
+```{r libraries, include=FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+### \color{Blue} Exercise 1
+
+\color{Dandelion} \textbf{(a)} \color{Black} The first dataset we are going to work with comes built-in with the `dpylr` package. Run the following to save a copy of the `starwars` dataset to a variable called `my.starwars`.
+
+```{r}
+my.starwars <- starwars
+```
+
+Use the following code block to view the `structure` of the data.
+```{r}
+str( my.starwars )
+```
+
+        
+\color{Dandelion} \textbf{(b)} \color{Black} Recalling what we did last week, plot a bar graph of the count of the `gender` variable. Make the bars horizontal instead of vertical.
+```{r}
+my.starwars$gender <- as.factor( my.starwars$gender )
+
+gender_plot <- ggplot( data=my.starwars, 
+                       aes(  
+                            y=gender ) ) +
+  geom_bar( aes( fill=gender ) ) +
+  labs( title="StarWars Characters by Gender", x="Number of Characters",
+        y="Gender", fill="Gender" )
+
+gender_plot
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} Now let's make a bivariate bar graph, plot the characters by name across the $x$-axis and their height on the $y$-axis. (Hint: first you need to ensure that the `name` variable is a factor so that it can map to our axis nicely.)
+```{r}
+my.starwars$name <- as.factor( my.starwars$name )
+
+starwars_plot <- ggplot( data=my.starwars, aes( x=name, y=height ) ) +
+  geom_bar( stat='identity', aes( fill=gender ) ) +
+  labs( title="StarWars Characters by Height", x="Character Name", 
+        y="Height", fill="Gender" )
+
+starwars_plot
+```
+
+\color{Dandelion} \textbf{(d)} \color{Black} If you correctly answered (c) the plot will have a lot of bars (too many in my opinion). To reduce the number of observations we can use the `filter` function and the pipe `%>%` to filter them based on the value of a variable. For example the following will filter out all characters who are under 100kg, leaving only the heavier characters:
+```{r}
+my.starwars.heavy <- my.starwars %>% filter(mass > 100)
+```
+Note here that if we assign it to a variable name, then we can then use it later.
+
+In the code block below, filter your data to include only star wars characters over 120kg and then plot a bar chart of `mass` against `name` for this filtered data.
+```{r}
+my.starwars.chonk <- my.starwars %>% filter( mass > 120 )
+
+starwars_chonk_graph <- ggplot( data=my.starwars.chonk ) +
+  geom_bar( stat='identity', aes( x=name, y=mass, fill=gender ) ) +
+  labs( title="Heavy StarWars Characters by Mass", x="Character Name", 
+        y="Mass", fill="Gender" )
+
+starwars_chonk_graph
+```
+
+\color{Dandelion} \textbf{(e)} \color{Black} You can reorder the characters on the x-axis with a `reorder` function. We use this by telling the function the variable to reorder and the variable that we want it to be reordered by. For example the following code block will plot a bar chart of `height` against `name` with the characters ordered by decreasing height:
+```{r}
+ggplot(data=my.starwars,
+       mapping=aes(x=reorder(name, -height), y=height))+
+  geom_bar(stat="identity", fill="darkgoldenrod2")
+```
+In the code block below, filter your data to include only star wars characters under 70kg and then plot a bar chart of `mass` against `name` for this filtered data, with the characters ordered from heaviest (left) to lightest (right) on the x-axis.
+```{r}
+my.starwars.smol <- my.starwars %>% filter( mass < 70 )
+
+starwars_smol_graph <- ggplot( data=my.starwars.smol ) +
+  geom_bar( stat='identity', 
+            aes( x=reorder( name, -mass ), y=mass, fill=gender ) ) +
+  labs( title="Lightweight StarWars Characters by Mass", 
+        x="Character Name", y="Mass", fill="Gender" ) + 
+  theme( axis.text.x = element_text( angle = 45, hjust=.85 ) )
+
+starwars_smol_graph
+```
+        
+### \color{Blue} Exercise 2
+
+\color{Dandelion} \textbf{(a)} \color{Black} The next dataset we are going to work with is a Texan housing dataset that comes built-in with the `ggplot2` package. Run the following code block to save a copy of the dataset to a variable called `my.housing`.
+
+```{r}
+my.housing <- txhousing
+```
+
+In this question we are going to look at scatterplots, so we'll be using 2 numerical variables. The geometric object for a scatterplot in `ggplot` is `geom_point()`. Use the following code block to create a scatterplot of housing volume against the number of housing listings:
+
+```{r}
+housing_plot <- ggplot( data=my.housing ) +
+  geom_point( aes( x=listings, y=volume ) ) + 
+  labs( title="Texas House Volume vs. Listings", x="Listings", y="Volumes" )
+
+housing_plot
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} What is the relationship between `volume` and `listings`? (eg. as listings increases/decreases, volume increases/decreases)
+
+# There appears to be a moderate, positive relationship between volume and listings. As the number of listings increases, so too does the volume of sales.
+        
+\color{Dandelion} \textbf{(c)} \color{Black} Using the plot from part (b), use the following code block to add a line-of-best-fit to this plot:
+```{r}
+SLR <- lm( my.housing$volume ~ my.housing$listings )
+
+my.housing <- my.housing %>%
+  dplyr::select( -matches('fit'), -matches('lwr'), -matches('upr') ) %>%
+  cbind( predict(SLR, newdata=., interval='confidence') )
+
+housing_plot <- ggplot( data=my.housing ) +
+  geom_point( aes( x=listings, y=volume ) ) + 
+  labs( title="Texas House Volume vs. Listings", x="Listings", y="Volumes" ) + 
+  geom_line( aes( x=listings, y=fit ), color='red' )
+
+housing_plot
+```
+
+\color{Dandelion} \textbf{(d)} \color{Black} Filter your data so that you reduce your data to only the city of Paris, TX (using `==` for equality). Create the same scatterplot with a line-of-best-fit for the data only from Paris.
+```{r}
+my.housing.paris <- my.housing %>% filter( city == 'Paris' )
+
+SLR.paris <- lm( my.housing.paris$volume ~ my.housing.paris$listings )
+
+my.housing.paris <- my.housing.paris %>%
+  dplyr::select( -matches('fit'), -matches('lwr'), -matches('upr') ) %>%
+  cbind( predict(SLR.paris, newdata=., interval='confidence') )
+
+housing_plot <- ggplot( data=my.housing.paris ) +
+  geom_point( aes( x=listings, y=volume ) ) + 
+  labs( title="Paris, TX House Volume vs. Listings", x="Listings", y="Volumes" ) + 
+  geom_line( aes( x=listings, y=fit ), color='red' )
+
+housing_plot
+```
+
+\color{Dandelion} \textbf{(e)} \color{Black} What is the relationship between `volume` and `listings` in Paris?
+
+# There appears to be no significant relationship between volume and listings in Paris.
+
+### \color{Blue} Exercise 3
+
+\color{Dandelion} \textbf{(a)} \color{Black} The final dataset we are going to work with is data on the US economy over time, and it also comes built-in with the `ggplot2` package. Run the following code block to save a copy of the dataset to a variable called `my.econ`.
+
+```{r}
+my.econ <- economics
+```
+
+Use the following code block to look at the structure of your data, specifically the data types. What data type is the $\mathtt{date}$ variable?
+
+```{r}
+str( my.econ )
+```
+
+# The date variable is of the type Date.
+
+\color{Dandelion} \textbf{(b)} \color{Black} In this question we are going to look at plotting line graphs, in particular time series data, where the independent variable is time (day, week, date, etc.). The geometric object for a line graph in `ggplot` is `geom_line()`. As the date variable is already a date, $\mathbb{R}$ knows how to handle it here, but in the future we might have to cast our variable to a date data type.
+
+Use the following code block to plot a line graph of unemployment against time: 
+```{r}
+econ_graph <- ggplot( data=my.econ ) +
+  geom_line( aes( x=date, y=unemploy ) ) +
+  labs( title="Unemployment Over Time", x="Date", y="Total Number Unemployed" )
+
+econ_graph
+```
+
+
+\color{Dandelion} \textbf{(c)} \color{Black} What notable about this plot? Eg. Is it increasing? Is there a pattern?
+
+# Unemployment does seem to be increasing as a whole, however, there also appear to be cycles of high and low unemployment which periodically occur.
+        
+\color{Dandelion} \textbf{(d)} \color{Black} To add a new column to our dataset that is based on existing columns, we can write it as an equation of the existing columns and assign it to a new column name. For example, if we want to create a column for the unemployment rate (unemployment per person), we can run:
+```{r}
+my.econ$unemployment.rate <- my.econ$unemploy / my.econ$pop
+```
+If you view your data after running this you will see that your new column is on the end of the dataset.
+
+Plot this new column against time as a line graph.
+```{r}
+unemployment_chart <- ggplot( data=my.econ ) +
+  geom_line( aes( x=date, y=unemployment.rate ) ) +
+  labs( title="Unemployment Rate Over Time", x="Date", y="Unemployment Rate" )
+
+unemployment_chart
+```
+
+\color{Dandelion} \textbf{(e)} \color{Black} Is the pattern/trend here different or the same as that you observed in part (c)?
+
+# The trend of this chart seems to be more neutral than the chart in part (c). It would appear that unemployment rate is slightly increasing over time, but much less than total unemployment. Likewise, we also see the same cyclic patterns of high and low unemployment rates over time. This could likely be explained by a relatively stable unemployment rate, but with a growing population, leading to higher/growing overall rates of unemployment.

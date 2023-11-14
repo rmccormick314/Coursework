@@ -1,0 +1,242 @@
+---
+title: 'STA 141 Worksheet 5'
+author: 'Richard McCormick'
+date: 'October 12, 2023'
+output: pdf_document
+classoption: dvipsnames
+fontsize: 12pt
+geometry: margin=1.25cm
+header-includes:
+   - \usepackage{amssymb}
+   - \let\rmarkdownfootnote\footnote%
+   - \def\footnote{\protect\rmarkdownfootnote}
+   - \usepackage{titling}
+   - \setlength{\droptitle}{-2em}
+   - \pretitle{\vspace{\droptitle}\centering\huge}
+   - \posttitle{\par}
+   - \preauthor{\centering\large}
+   - \postauthor{\par}
+   - \predate{\centering\large}
+   - \postdate{\par}
+---
+
+# \color{Blue} \textbf{Due Date: Thursday, October 19, 2023 before 11:00am.}
+
+## Instructions
+\color{Black}
+Worksheets must be turned in as a PDF file through Canvas. The worksheet is worth a total of \textbf{15 points}, which is 3 percent of your overall grade.
+
+## \color{Blue} Exercises
+
+Begin by running the following code block to add the packages we need to use to our library. If you haven't installed `Stat2Data` previously then you'll have to install the package first.
+```{r libraries, include=FALSE}
+library(ggplot2)
+library(dplyr)
+library(Stat2Data)
+library(tidyverse)
+```
+
+### \color{Blue} Exercise 1
+
+\color{Dandelion} \textbf{(a)} \color{Black} The dataset from this package that we are going to use is called `SandwichAnts`. It summarizes experiments where people left sandwiches with types of bread and different fillings out in the open and counted the number of ants that it attracted. Let's save a copy of the dataset to our environment so that we can use it.
+
+```{r}
+data("SandwichAnts")
+my.ants <- SandwichAnts
+```
+
+Use commands we've learned to look at the different bread types and fillings used in the experiments.
+
+```{r}
+unique( my.ants$Bread )
+unique( my.ants$Filling )
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} Produce a frequency table to check that the experiments used each bread type an equal number of times. Do the same for the fillings.
+
+```{r}
+table( my.ants$Bread )
+table( my.ants$Filling )
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} Recalling what we did last week, plot a bivariate bar graph of the `Ants` variable against the `Bread` variable.
+
+```{r}
+ants_plot <- ggplot( data=my.ants ) +
+  geom_bar( stat='identity', aes( x=Bread, y=Ants ) ) +
+  labs( title="Bread Choice of Ants" )
+
+ants_plot
+```
+
+\color{Dandelion} \textbf{(d)} \color{Black} Based on these experiments which bread do ants prefer? And by how much?
+
+It appears that the ants prefer white bread by a small amount.
+
+\color{Dandelion} \textbf{(e)} \color{Black} Recalling what we did last week, plot a bivariate bar graph of the `Ants` variable against the `Filling` variable.
+
+```{r}
+ants_plot <- ggplot( data=my.ants ) +
+  geom_bar( stat='identity', aes( x=Filling, y=Ants ) ) +
+  labs( title="Filling Choice of Ants" )
+
+ants_plot
+```
+
+\color{Dandelion} \textbf{(f)} \color{Black} Sometimes we find that an overall trend doesn't hold across sub-groups of the data. Produce a stacked bar chart to look at how the number of ants changes with different fillings.
+
+```{r}
+ants_plot <- ggplot( data=my.ants ) +
+  geom_bar( stat='identity', aes( x=Bread, y=Ants, fill=Filling ) ) +
+  labs( title="Bread Choice of Ants" )
+
+ants_plot
+```
+
+\color{Dandelion} \textbf{(g)} \color{Black} Does it look like ants prefer one filling over the other two?
+
+It looks like the ants prefer the Ham & Pickles filling over other fillings.
+
+\color{Dandelion} \textbf{(h)} \color{Black} Check your answer to part (f) by switching the mapping of the `Bread` and `Filling` variables. That is, map `Filling` to the `x`-axis and `Bread` to the fill (or color) aesthetic.
+
+```{r}
+ants_plot <- ggplot( data=my.ants ) +
+  geom_bar( stat='identity', aes( x=Filling, y=Ants, fill=Bread ) ) +
+  labs( title="Filling Choice of Ants" )
+
+ants_plot
+```
+
+\color{Dandelion} \textbf{(i)} \color{Black} Produce a grouped bar chart using the same variable mappings as the stacked bar chart (f).
+
+```{r}
+ants_plot <- ggplot( data=my.ants ) +
+  geom_bar( stat='identity', position="dodge", 
+            aes( x=Bread, y=Ants, fill=Filling ) ) +
+  labs( title="Bread Choice of Ants" )
+
+ants_plot
+```
+
+\color{Dandelion} \textbf{(j)} \color{Black} Using this plot which is the most popular bread-filling combination and which is the least?
+
+It appears the most popular bread-filling combination is Multigrain Ham & Pickles, while the least popular is Muligrain Vegemite.
+
+### \color{Blue} Exercise 2
+
+\color{Dandelion} \textbf{(a)} \color{Black} As we saw in the lecture, one of the most famous datasets in data science is the Iris dataset. It has measurements on 4 variables for 3 different types of flowers. Let's explore multivariate scatterplots using this data. Run the following code block to save a copy of the dataset to a variable called `my.iris`.
+
+```{r}
+my.iris <- iris
+```
+
+\color{Dandelion} \textbf{(a)} \color{Black} Using our knowledge from Worksheet 4, produce a scatterplot of Petal Length against Sepal Length for the whole dataset.
+
+```{r}
+iris_plot <- ggplot( data=my.iris ) +
+  geom_point( aes( x=Sepal.Length, y=Petal.Length ) ) +
+  labs( title="Sepal Length vs. Petal Length", x="Sepal Length",
+        y="Petal Length" )
+
+iris_plot
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} Using your scatterplot from part (a) as a basis, add the species variable by mapping it to color.
+
+```{r}
+iris_plot <- ggplot( data=my.iris ) +
+  geom_point( aes( x=Sepal.Length, y=Petal.Length, color=Species ) ) +
+  labs( title="Sepal Length vs. Petal Length", x="Sepal Length",
+        y="Petal Length" )
+
+iris_plot
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} Using your scatterplot from part (a) as a basis, add the species variable by mapping it to color.
+
+```{r}
+iris_plot <- ggplot( data=my.iris ) +
+  geom_point( aes( x=Sepal.Length, y=Petal.Length, color=Species ) ) +
+  labs( title="Sepal Length vs. Petal Length", x="Sepal Length",
+        y="Petal Length" )
+
+iris_plot
+```
+
+\color{Dandelion} \textbf{(d)} \color{Black} From this, can you see which species has the longest petals and which has the shortest?
+
+From the plot, it looks like the Virginica flower has the longest petals, and the Setosa flower has the shortest petals.
+
+\color{Dandelion} \textbf{(e)} \color{Black} Using your scatterplot from part (c) as a basis, add a line of best fit for each species.
+
+```{r}
+iris_plot <- ggplot( data=my.iris ) +
+  geom_point( aes( x=Sepal.Length, y=Petal.Length, color=Species ) ) +
+  geom_smooth( method="lm", aes( x=Sepal.Length, y=Petal.Length, col=Species ) ) +
+  labs( title="Sepal Length vs. Petal Length", x="Sepal Length",
+        y="Petal Length" )
+
+iris_plot
+```
+
+\color{Dandelion} \textbf{(f)} \color{Black} If I measure a new flower and it has a petal length of 6.5, which species is it most likely to be? If I measure a new flower and it has a sepal length of 4.8, which species is it most likely to be?
+
+A flower with petal length of 6.5 would most likely be a Virginica flower. A flower with a petal length of 4.8 would most likely be a Versicolor flower.
+
+\color{Dandelion} \textbf{(g)} \color{Black} Produce a pairs plot for our data using the `GGally` package.
+```{r}
+library(GGally)
+```
+Look at the help documents (`?ggpairs`) we see if you can work out how to use the ggpairs function to produce a pairs plot with scatterplots on the upper and lower half matrices, and a histogram down the main diagonal.
+
+```{r}
+ggpairs( data=my.iris,
+         mapping=aes( x=Sepal.Length, 
+                      y=Petal.Length,
+                      color=Species ),
+         upper=list( continuous="points" ),
+         diag=list( continuous="barDiag" ),
+         lower=list( continuous="points" ) )
+```
+
+### \color{Blue} Exercise 3
+
+\color{Dandelion} \textbf{(a)} \color{Black} The final dataset we are going to work with is the `msleep` dataset that describes the sleep characteristics of various mammals. Run the following code block to save a copy of the dataset to a variable called `my.mammals`. The following will also remove some of the missing values from the original dataset so we don't run into any issues. We will learn about the `drop_na` function in the next couple of weeks, but for now you can just run the code block as provided.
+
+```{r}
+my.mammals <- msleep
+my.mammals <- my.mammals %>% drop_na( sleep_total ) %>% drop_na( bodywt )
+```
+
+Using this data, produce a scatterplot of sleep total against body weight.
+
+```{r}
+mammal_plot <- ggplot( data=my.mammals ) +
+  geom_point( aes( x=bodywt, y=sleep_total ) ) +
+  labs( title="Total Sleep by Body Weight", x="Body Weight", y="Total Sleep" )
+
+mammal_plot
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} The three largest points seem to be skewing the plot a lot. Remove them and produce the plot again.
+
+```{r}
+my.mammals = dplyr::filter( my.mammals, as.numeric(bodywt) < 800 )
+mammal_plot <- ggplot( data=my.mammals ) +
+  geom_point( aes( x=bodywt, y=sleep_total ) ) +
+  labs( title="Total Sleep by Body Weight", x="Body Weight", y="Total Sleep" )
+
+mammal_plot
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} Create a facet grid of scatterplots using the same variables as (a) and (b), but separate the plots by columns mapped to the levels of the `vore` variable.
+
+```{r}
+mammal_plot <- ggplot( data=my.mammals ) +
+  geom_point( aes( x=bodywt, y=sleep_total ) ) +
+  labs( title="Total Sleep by Body Weight", x="Body Weight", y="Total Sleep" ) +
+  facet_grid( ~vore )
+
+mammal_plot
+```
+

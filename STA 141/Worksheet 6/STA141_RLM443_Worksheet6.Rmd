@@ -1,0 +1,192 @@
+---
+title: 'STA 141 Worksheet 6'
+author: 'Richard McCormick'
+date: 'October 24, 2023'
+output: pdf_document
+classoption: dvipsnames
+fontsize: 12pt
+geometry: margin=1.25cm
+header-includes:
+   - \usepackage{amssymb}
+   - \let\rmarkdownfootnote\footnote%
+   - \def\footnote{\protect\rmarkdownfootnote}
+   - \usepackage{titling}
+   - \setlength{\droptitle}{-2em}
+   - \pretitle{\vspace{\droptitle}\centering\huge}
+   - \posttitle{\par}
+   - \preauthor{\centering\large}
+   - \postauthor{\par}
+   - \predate{\centering\large}
+   - \postdate{\par}
+---
+
+# \color{Blue} \textbf{Due Date: Tuesday, October 31, 2023 before 11:00am.}
+
+## Instructions
+\color{Black}
+Worksheets must be turned in as a PDF file through Canvas. The worksheet is worth a total of \textbf{15 points}, which is 3 percent of your overall grade.
+
+## \color{Blue} Exercises
+
+Begin by running the following code block to add the packages we need to use to our library.
+```{r libraries, include=FALSE}
+library(tidyverse)
+```
+
+### \color{Blue} Exercise 1
+
+\color{Dandelion} \textbf{(a)} \color{Black} Import the Flagstaff Weather dataset from the following URL and save as weather: `https://github.com/dereksonderegger/141/raw/master/data-raw/FlagMaxTemp.csv`
+```{r}
+weather <- read_csv( 'https://github.com/dereksonderegger/141/raw/master/data-raw/FlagMaxTemp.csv' )
+head( weather )
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} Is this data in a wide or a long format and why?
+
+The data appears to be in a mix of wide and long formats. It is in long format for the years and months, but in wide format for the days.
+
+\color{Dandelion} \textbf{(c)} \color{Black} How many rows and how many columns are in this dataset (at present)?
+
+```{r}
+dim( weather )
+```
+There are 365 rows, with 34 columns.
+
+\color{Dandelion} \textbf{(d)} \color{Black} Reshape the data into the long format where it has only four columns:  `Year, Month, Day, Max.temp`
+
+```{r}
+weather <- weather %>%
+    pivot_longer( 
+    4:34,                # which columns to apply this to
+    names_to  = 'Day',   # What should I call the column of old column names
+    values_to = 'Max.Temp')
+
+weather <- subset( weather, select = c( "Year", "Month", "Day", "Max.Temp" ) )
+
+head( weather )
+```
+
+\color{Dandelion} \textbf{(e)} \color{Black} How many observations and how many columns are in this dataset now?
+
+```{r}
+dim( weather )
+```
+There are now 11,315 observations and 4 columns in the dataset.
+
+\color{Dandelion} \textbf{(f)} \color{Black} Filter the dataset so you only have measurements from the Year 2012.
+
+```{r}
+weather.2012 <- weather %>% filter( Year == 2012 )
+head( weather.2012 )
+```
+
+\color{Dandelion} \textbf{(g)} \color{Black} How many `NA` values are there in the 2012 dataset?
+
+```{r}
+sum( is.na( weather.2012$Max.Temp ) )
+```
+
+### \color{Blue} Exercise 2
+
+\color{Dandelion} \textbf{(a)} \color{Black} Download the file named `wide.data.csv` from Canvas and read it into R.
+```{r}
+wide.data <- read_csv( 'wide.data.csv' )
+head( wide.data )
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} Is this data in a wide format or is the file named incorrectly?
+
+The data is named correctly. This data is in wide format.
+
+\color{Dandelion} \textbf{(e)} \color{Black} Tidy the data so that it is in the long format. Give the new columns names that you believe are appropriate.
+
+```{r}
+long.data <- wide.data %>%
+    pivot_longer( 
+    2:5,                # which columns to apply this to
+    names_to  = 'Year',   # What should I call the column of old column names
+    values_to = 'Value')
+
+head( long.data )
+```
+
+\color{Dandelion} \textbf{(f)} \color{Black} Remove any rows from the dataset that have missing values.
+
+```{r}
+long.data <- long.data %>% drop_na()
+long.data
+```
+
+\color{Dandelion} \textbf{(g)} \color{Black} Filter the data so that you only have the United States and Canada's values. Plot a line graph of each of the values against the year.
+
+```{r}
+long.data <- long.data %>% filter( Country.Name == "United States" | 
+                                     Country.Name == "Canada" )
+
+long.plot <- ggplot( data=long.data ) +
+  geom_line( aes( x = Year, y = Value, group=Country.Name, color=Country.Name ) ) +
+  labs( title="Value by Country Over Time", x="Year", y="Value" )
+
+long.plot
+```
+
+\color{Dandelion} \textbf{(h)} \color{Black} Are the two countries following the same trend in this (unknown) variable?
+
+No. The two countries are following opposite trends - the United States is going up, while Canada is going down.
+
+### \color{Blue} Exercise 3
+\color{Dandelion} \textbf{(a)} \color{Black} Download the file named `msleep.csv` from Canvas and read it into R. This is an edited version of the dataset that is available freely in R.
+```{r}
+sleep.data <- read_csv( "msleep.csv" )
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} One of mammals has a NA value for the `awake` variable. Find it and replace it with the correct value. Hint: Once you locate it you can replace the value using slicing: `data[row,column] <- value`
+
+```{r}
+sleep.data[ 64, 'awake' ] <- 11
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} Plot a bar chart of the `vore` variable. Are there any issues with the levels?
+
+```{r}
+sleep.plot <- ggplot( data = sleep.data ) + 
+  geom_bar( aes( x=vore, 
+                 y=after_stat( count )/sum(after_stat( count ) ) ) ) +
+  labs( title="Count of -vore", y="Count", x="-vore Type" )
+
+sleep.plot
+```
+There seems to be an issue that there is a significant amount of NA-vores. This means that the data is not complete.
+
+\color{Dandelion} \textbf{(d)} \color{Black} Do the same for the `order` and `conservation` variables. Do there appear to be any issues with these variables?
+
+```{r}
+sleep.plot <- ggplot( data = sleep.data ) + 
+  geom_bar( aes( x=order, 
+                 y=after_stat( count ) ) ) +
+  labs( title="Count of Order", y="Count", x="Order Type" ) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+sleep.plot
+```
+There doesn't appear to be any issue with the Order variable.
+
+```{r}
+sleep.plot <- ggplot( data = sleep.data ) + 
+  geom_bar( aes( x=conservation, 
+                 y=after_stat( count ) ) ) +
+  labs( title="Count of Conservation", y="Count", x="Conservation Type" ) 
+
+sleep.plot
+```
+There appears to be a very large number of NA in the Conservation variable, which indicates that the data is not complete.
+
+\color{Dandelion} \textbf{(e)} \color{Black} Finally, plot a histogram of the `body weight` variable. Does there appear to be any issue with the values of this variable?
+
+```{r}
+sleep.plot <- ggplot( data=sleep.data ) +
+  geom_histogram( aes( x=bodywt ) )
+
+sleep.plot
+```
+The issue with this data is that the majority of the data is clustered around a very low body weight, but there are a few outliers with very high body weight. This makes it very difficult to accurately assess the data, as we can't really see the majority of the data.

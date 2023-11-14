@@ -1,0 +1,214 @@
+---
+title: 'STA 141 Worksheet 1'
+author: 'Richard McCormick'
+date: 'September 5, 2023'
+output: pdf_document
+classoption: dvipsnames
+fontsize: 12pt
+geometry: margin=1.25cm
+header-includes:
+   - \usepackage{amssymb}
+   - \let\rmarkdownfootnote\footnote%
+   - \def\footnote{\protect\rmarkdownfootnote}
+   - \usepackage{titling}
+   - \setlength{\droptitle}{-2em}
+   - \pretitle{\vspace{\droptitle}\centering\huge}
+   - \posttitle{\par}
+   - \preauthor{\centering\large}
+   - \postauthor{\par}
+   - \predate{\centering\large}
+   - \postdate{\par}
+---
+
+# \color{Blue} \textbf{Due Date: Thursday, September 14, 2023 before 11:00am.}
+
+## Instructions
+\color{Black}
+Worksheets must be turned in as a PDF file through Canvas. The worksheet is worth a total of \textbf{15 points}, which is 3 percent of your overall grade.
+
+## \color{Blue} Exercises
+
+### \color{Blue} Exercise 1 - Assignment and data types
+
+\color{Dandelion} \textbf{(a)} \color{Black} In the `R` programming language we use a `<-` to assign a value to a variable name. For example, the following assigns a value of 141 to a variable called a. You can run this code by clicking on the arrow in the far right corner of the code box.
+```{r}
+a <- 141
+```
+You should now see a variable saved to your working environment in the top right window of RStudio. From now on, any time we use the variable a it will be the same as using the value 141 (unless we save over it with a different value).
+
+Any time you want to see the value of a variable you can just type its name into a code block like below and click the arrow to run the block:
+```{r}
+a
+```
+In the box below, create a variable called x and assign it a numerical value of your choosing. Type x on the second line and then click run to make sure it all worked and the value printed:
+```{r}
+x <- 69420
+x
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} You can check the variable type by using a function called class. The following will print the data type of the variable a that we created above:
+```{r}
+class(a)
+```
+Check the data type of the variable x here:
+```{r}
+class(x)
+```
+\color{Dandelion} \textbf{(c)} \color{Black} You can always change the value saved to a variable (if you couldn't it probably would be called a constant not a variable). Change the value of x to 4.0 and check its type here:
+```{r}
+x <- 4.0
+class(x)
+```
+\color{Dandelion} \textbf{(d)} \color{Black} The other main data type in the R programming language is characters (aka strings). These are simply words saved as variables. When we have a table of data we will be able to create categorical variables by ensuring that only certain characters are present in the column of the table. To assign a character to a variable name we do the same thing as above but wrap the value (the word) in quotes. The following will create a variable called NAU with a value of great:
+```{r}
+NAU <- "great"
+NAU
+```
+We can check the class of the NAU variable using the same class function as we did above.
+
+In the following code block, create a variable called student and assign your name as its value. Check its data type on the following line.
+```{r}
+student <- "Student"
+class(student)
+```
+
+### \color{Blue} Exercise 2 - Dataframes
+
+Before you begin this question make sure you have downloaded the file called `fish.csv` from canvas and saved it into the same folder as this file (preferably the STA141 folder that you've created).
+
+The following will read in a dataset called fish and save it as fishes:
+```{r}
+fishes <- read.csv("fish.csv")
+```
+You should be able to see the dataframe saved in the top right window of RStudio with your other variables.
+
+To view a dataframe in a new tab we can double click on the dataset in the top right window.
+
+To see a summary of a dataframe in RStudio we can use the summary function like this:
+```{r}
+summary(fishes)
+```
+You can see that this provides statistics for the numerical columns and shows the class of character columns.
+
+\color{Dandelion} \textbf{(a)} \color{Black} To find the number of rows or columns in a dataframe, we can use the nrow or ncol functions, respectively. The following shows the number of columns in fishes:
+```{r}
+ncol(fishes)
+```
+Find the number of rows in fishes in the code block below:
+```{r}
+nrow(fishes)
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} Often we don't want to use all of the data in the dataframe. To remove the rows or columns we don't want we use slicing. When you're doing this, you need to remember that you always need to tell R the rows you want to keep followed by the columns you want to keep, separated by a comma.
+
+The following will keep the 5th row and the 3rd column:
+```{r}
+fishes[5,3]
+```
+If we don't include a number before or after the comma then we will keep all of the rows/columns. The following will keep the 5th row and all the columns:
+```{r}
+fishes[5,]
+```
+And this will keep all the rows and only the 3rd column:
+```{r}
+fishes[,3]
+```
+If we want to keep rows a to b, we can inlcude them separated by a colon. The following will keep rows 3 to 5 and all the columns.
+```{r}
+fishes[3:5,]
+```
+In the code block below, slice the dataframe to keep only the first 35 rows and the first 2 columns.
+```{r}
+fishes[1:35, 1:2]
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} You can also access a column of a dataframe using the `$` and its name. For example the following will access the Species column of our dataframe:
+```{r}
+fishes$Species
+```
+In the following code block, print out the Weight column of the fishes dataframe.
+```{r}
+fishes$Weight
+```
+
+NOTE: If you ever want to check the names of the columns in your data you can use the colnames function like this:
+```{r}
+colnames(fishes)
+```
+
+### \color{Blue} Exercise 3 - Data types inside dataframes
+There are also a number of datasets that are installed in R. We can load a dataset on Orange Trees by running:
+```{r}
+data(Orange)
+```
+You can learn more about the data by running:
+```{r}
+?Orange
+```
+\color{Dandelion} \textbf{(a)} \color{Black} View the dataset using the function we learned above.
+```{r}
+summary(Orange)
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} It looks like the first column should be categorical as the values represent 5 different trees and the age and circumference are numerical. You can check the data type of the column using the class function we used above. For example, the age column:
+```{r}
+class(Orange$age)
+```
+Check whether the `Tree` column is a factor (the name for a categorical variable in R):
+```{r}
+class(Orange$Tree)
+```
+
+To check the levels of a factor we have a levels function. We can see all the different levels for Tree by running:
+```{r}
+levels(Orange$Tree)
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} Changing the data type of a variable is called casting. To cast the Tree column to a numeric data type we would run:
+```{r}
+Orange$Tree <- as.numeric(Orange$Tree)
+```
+You can see that we assign the new data to the old column name so that it overwrites it.
+
+To cast it back to a factor we would run:
+```{r}
+Orange$Tree <- as.factor(Orange$Tree)
+class(Orange$Tree)
+```
+Add a second line to the code above to verify the class is now a factor again.
+
+### \color{Blue} Exercise 4
+
+Load the Titanic dataset (built-in to R) by running:
+```{r}
+data(Titanic)
+Titanic <- data.frame(Titanic)
+```
+\color{Dandelion} \textbf{(a)} \color{Black} Write 2 lines of code to show how many rows and columns are in the dataset.
+
+```{r}
+nrow(Titanic)
+ncol(Titanic)
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} Write a line of code that shows the names of all the variables (columns) in the dataset.
+
+```{r}
+colnames(Titanic)
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} What is the data type of the `Age` column?
+```{r}
+class(Titanic$Age)
+```
+
+\color{Dandelion} \textbf{(d)} \color{Black} Slice the dataset so that the only remaining rows are adult females (retaining all the columns). Assign this to a variable called `adultfemale`. (Hint: You might want to use the View function to work out which rows to keep)
+
+```{r}
+adultfemale = Titanic[Titanic$Sex == c('Female'),]
+```
+
+Show that your answer is correct by printing the adultfemale variable.
+```{r}
+adultfemale
+```

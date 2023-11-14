@@ -1,0 +1,190 @@
+---
+title: 'STA 141 Worksheet 2'
+author: 'Richard McCormick'
+date: 'September 12, 2023'
+output: pdf_document
+classoption: dvipsnames
+fontsize: 12pt
+geometry: margin=1.25cm
+header-includes:
+   - \usepackage{amssymb}
+   - \let\rmarkdownfootnote\footnote%
+   - \def\footnote{\protect\rmarkdownfootnote}
+   - \usepackage{titling}
+   - \setlength{\droptitle}{-2em}
+   - \pretitle{\vspace{\droptitle}\centering\huge}
+   - \posttitle{\par}
+   - \preauthor{\centering\large}
+   - \postauthor{\par}
+   - \predate{\centering\large}
+   - \postdate{\par}
+---
+
+# \color{Blue} \textbf{Due Date: Thursday, September 21, 2023 before 11:00am.}
+
+## Instructions
+\color{Black}
+Worksheets must be turned in as a PDF file through Canvas. The worksheet is worth a total of \textbf{15 points}, which is 3 percent of your overall grade.
+
+## \color{Blue} Exercises
+
+Before you start! You will likely need to install the `tidyverse` package. To do this type `install.packages("tidyverse")` into the console window in RStudio.
+
+Once a package is installed on your computer, you need to add it to your library any time that you want to use it. The following code block will be on all of your worksheets from now on. It will load the packages you need into your library but it won't appear on the final pdf.
+```{r libraries, include=FALSE}
+library(ggplot2)
+```
+
+### \color{Blue} Exercise 1
+
+\color{Dandelion} \textbf{(a)} \color{Black} Load the `diabetes` dataset that is available on canvas.
+```{r}
+diabetes <- read.csv( 'diabetes.csv' )
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} Use the structure function `str()` to see the variable types of each column.
+```{r}
+str( diabetes )
+```
+\color{Dandelion} \textbf{(c)} \color{Black} Change the `SEX` variable to be categorical.
+```{r}
+diabetes$SEX <- as.factor( diabetes$SEX )
+```
+
+\newpage
+\color{Dandelion} \textbf{(d)} \color{Black} Use `ggplot` to create a points plot of blood pressure (`BP`) against Diabetes Progression (`Y`).
+```{r}
+diabetes_plot <- ggplot( data=diabetes, aes( x=BP, y=Y ) ) +
+  geom_point() + 
+  labs( x="Blood Pressure", 
+        y="Diabetes Progression", 
+        title="Blood Pressure vs. Diabetes Progression" )
+
+diabetes_plot
+```
+
+\newpage
+\color{Dandelion} \textbf{(d)} \color{Black} Repeat your points plot of blood pressure (`BP`) against Diabetes Progression (`Y`) but map the sex variable (`SEX`) to the color of the points.
+```{r}
+diabetes_plot <- diabetes_plot +
+  geom_point( aes( color=SEX ) )
+
+diabetes_plot
+```
+
+\color{Dandelion} \textbf{(e)} \color{Black} Is the color in (d) an example of hue or saturation?
+
+# The color is an example of hue, not saturation. This is because we changed sex to be a categorical variable, which saturation cannot map to.
+
+\newpage
+\color{Dandelion} \textbf{(f)} \color{Black} Repeat your points plot from (d) but change the size of the points to size 6. (Hint: as we are not mapping the size aesthetic to a variable, it does not go in the aesthetics!)
+```{r}
+diabetes_plot <- diabetes_plot + 
+  geom_point( aes( color=SEX ), size=6 )
+
+diabetes_plot
+```
+
+\newpage
+### \color{Blue} Exercise 2
+
+\color{Dandelion} \textbf{(a)} \color{Black} Load the `fish` dataset that is available on canvas.
+
+```{r}
+fish <- read.csv( 'Fish-1.csv', fileEncoding="UTF-8-BOM" )
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} Run the structure command in the following code block using whatever you called your dataset in part (a). After looking at the output decide if there are any variables that need to be cast to categorial variables (factors). If so, do this in the second code block.
+```{r}
+str( fish )
+```
+
+```{r}
+fish$Species <- as.factor( fish$Species )
+str( fish )
+```
+
+\newpage
+\color{Dandelion} \textbf{(c)} \color{Black} Create a points plot of the fish's weights against their lengths (using the `Length1` variable).
+```{r}
+fish_plot <- ggplot( data=fish ) +
+  geom_point( aes( x=Weight, y=Length1 ) ) +
+  labs( title="Fish Weight vs. Length" )
+
+fish_plot
+```
+
+\newpage
+\color{Dandelion} \textbf{(c)} \color{Black} Create the same points plot as in part (b) but now map the Species variable to color.
+```{r}
+fish_plot <- ggplot( data=fish ) +
+  geom_point( aes( x=Weight, y=Length1, color=Species ) ) +
+  labs( title="Fish Weight vs. Length" )
+
+
+fish_plot
+```
+
+\newpage
+\color{Dandelion} \textbf{(d)} \color{Black} Create the same points plot as in part (c) but now change the size of the points to 5.
+```{r}
+fish_plot <- ggplot( data=fish ) +
+  geom_point( aes( x=Weight, y=Length1, color=Species ), size=5 ) + 
+  labs( title="Fish Weight vs. Length" )
+
+fish_plot
+```
+
+\newpage
+### \color{Blue} Exercise 3
+
+\color{Dandelion} \textbf{(a)} \color{Black} Load the `wine` dataset that is available on canvas.
+
+```{r}
+wine <- read.csv( 'wine.csv' )
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} Create a points plot from the wine data using the pH as the response variable and residual sugar as the explanatory variable.
+```{r}
+wine_plot <- ggplot( data=wine ) + 
+  geom_point( aes( x=residual.sugar, y=pH ) ) +
+  labs( x="Residual Sugar", title="Residual Sugar vs. pH in Wine" )
+
+wine_plot
+```
+
+\newpage
+\color{Dandelion} \textbf{(c)} \color{Black} Create the same points plot from (b) but now map the quality variable to the size of the points.
+```{r}
+wine_plot <- ggplot( data=wine ) +
+  geom_point( aes( x=residual.sugar, y=pH, size=quality ) ) +
+  labs( x="Residual Sugar", 
+        title="Residual Sugar vs. pH in Wine",
+        size="Quality" )
+
+wine_plot
+```
+
+\newpage
+\color{Dandelion} \textbf{(d)} \color{Black} Create the same points plot from (c) but now change the color of all the points to a color of your choice from here: https://www.datanovia.com/en/blog/awesome-list-of-657-r-color-names/
+```{r}
+wine_plot <- ggplot( data=wine ) +
+  geom_point( aes( x=residual.sugar, y=pH, size=quality ), color='skyblue' ) +
+  labs( x="Residual Sugar", 
+        title="Residual Sugar vs. pH in Wine",
+        size="Quality" )
+
+wine_plot
+```
+
+\newpage
+\color{Dandelion} \textbf{(e)} \color{Black} Create the same plot as in part (d) but this time use only the first 20 rows of the data. You may use the same color or choose another one from the website.
+```{r}
+wine_plot <- ggplot( data=wine[1:20,] ) +
+  geom_point( aes( x=residual.sugar, y=pH, size=quality ), color='darkolivegreen' ) +
+  labs( x="Residual Sugar", 
+        title="Residual Sugar vs. pH in Wine",
+        size="Quality" )
+
+wine_plot
+```

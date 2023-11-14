@@ -1,0 +1,142 @@
+---
+title: 'STA 141 Worksheet '
+author: 'Richard McCormick'
+date: 'October 31, 2023'
+output: pdf_document
+classoption: dvipsnames
+fontsize: 12pt
+geometry: margin=1.25cm
+header-includes:
+   - \usepackage{amssymb}
+   - \let\rmarkdownfootnote\footnote%
+   - \def\footnote{\protect\rmarkdownfootnote}
+   - \usepackage{titling}
+   - \setlength{\droptitle}{-2em}
+   - \pretitle{\vspace{\droptitle}\centering\huge}
+   - \posttitle{\par}
+   - \preauthor{\centering\large}
+   - \postauthor{\par}
+   - \predate{\centering\large}
+   - \postdate{\par}
+---
+
+# \color{Blue} \textbf{Due Date: Tuesday, November 7, 2023 before 11:00am.}
+
+## Instructions
+\color{Black}
+Worksheets must be turned in as a PDF file through Canvas. The worksheet is worth a total of \textbf{15 points}, which is 3 percent of your overall grade.
+
+## \color{Blue} Exercises
+
+The first question will require the use of the `Stat2Data` package. You will need to run `install.packages("Stat2Data")` before doing anything else.
+
+Begin by running the following code block to add the packages we need to use to our library.
+```{r libraries, include=FALSE}
+library(tidyverse)
+library(Stat2Data)
+```
+
+### \color{Blue} Exercise 1
+
+\color{Dandelion} \textbf{(a)} \color{Black} This question will use the `MetabolicRate` dataset from the `Stat2Data` package.
+
+```{r}
+data(MetabolicRate)
+my.met.rate <- MetabolicRate
+```
+Use the help documents and commands we've learned to understand what is being shown in the dataset. Describe the data in one or two sentences below:
+
+The data tracks the metabolic rates and physical characteristics of different catepillars. There is a column for keeping track of each individual catepillar, and the data appears to be in long format.
+
+\color{Dandelion} \textbf{(b)} \color{Black} Find the mean of the Body Size of the caterpillars in our dataset.
+
+```{r}
+mean( my.met.rate$BodySize )
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} Find the median of the Metabolic Rate of the caterpillars in our dataset.
+
+```{r}
+median( my.met.rate$Mrate )
+```
+
+
+\color{Dandelion} \textbf{(d)} \color{Black} Find the maximum metabolic rate for caterpillars in each stage of life.
+```{r}
+my.met.rate %>% group_by( Instar ) %>% summarise( Value = max( Mrate ) )
+```
+
+
+\color{Dandelion} \textbf{(e)} \color{Black} Use indexing to create a dataframe with only the `BodySize`, `CO2ppm`, and `Mrate` variables.
+```{r}
+new.data <- data.frame( select( my.met.rate, c( "BodySize", "CO2ppm", "Mrate" ) ) )
+head( new.data )
+```
+
+\color{Dandelion} \textbf{(f)} \color{Black} Call the `colMeans()` function on your dataset.
+```{r}
+colMeans( new.data )
+```
+
+What does this function do? How does this relate to the tidy data that we learned about last week?
+
+This function calculates the average of each columns. This relates to tidy data because we are creating a clean summary of each column.
+
+\color{Dandelion} \textbf{(f)} \color{Black} Find the upper and lower quartiles of the metabolic rate of the catepillars using the `quantiles()` function. Calculate the inter-quartile range using these numbers.
+
+```{r}
+quants <- quantile( my.met.rate$Mrate )
+quants
+# IQR = Q3 - Q1
+IQR = quants[4] - quants[2]
+print( paste( "IQR: ", IQR ) )
+```
+
+\color{Dandelion} \textbf{(g)} \color{Black} Confirm your answer to `(f)` using the `IQR()` function.
+
+```{r}
+IQR( my.met.rate$Mrate )
+```
+
+
+### \color{Blue} Exercise 2
+
+\color{Dandelion} \textbf{(a)} \color{Black} Import the Flagstaff Weather dataset from the following URL and save as weather: `https://github.com/dereksonderegger/141/raw/master/data-raw/FlagMaxTemp.csv`
+```{r}
+weather <- read_csv( 'https://github.com/dereksonderegger/141/raw/master/data-raw/FlagMaxTemp.csv' )
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} As we saw last week, this data is in a wide format, use `pivot_longer` to pivot it to a long format.
+```{r}
+weather <- weather %>%
+    pivot_longer( 
+    4:34,                # which columns to apply this to
+    names_to  = 'Day',   # What should I call the column of old column names
+    values_to = 'Max.Temp')
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} Use `complete.cases()` to remove all the `NA` values from the data.
+```{r}
+weather <- weather %>% filter( complete.cases( weather ) )
+```
+
+\color{Dandelion} \textbf{(d)} \color{Black} Find the lowest maximum temperature that occurs in July and the highest maximum temperature that occurs in January.
+```{r}
+weather %>% filter( Month == 7 ) %>%
+  group_by( Month ) %>% summarise( Low.July = min( weather$Max.Temp ) )
+
+weather %>% filter( Month == 1 ) %>% 
+  group_by( Month ) %>% summarise( High.Jan = max( weather$Max.Temp ) )
+
+```
+
+Is the warmest ever January day warmer or colder than the coldest ever July day?
+
+The warmest every January day is significantly warmer than the coldest ever July day.
+
+\color{Dandelion} \textbf{(e)} \color{Black} Verify the number of rows of data that have a `Max.temp` less than the value that is the 10th percentile. Hint: you might consider using `nrow`, `filter`, and `quantile`.
+```{r}
+weather %>% 
+  filter( Max.Temp < quantile( Max.Temp, probs = c( 0.1 ) ) ) %>% 
+  summarize( n=n() )
+```
