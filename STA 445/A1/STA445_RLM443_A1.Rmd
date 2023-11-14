@@ -1,0 +1,188 @@
+---
+title: 'STA 445 - Homework #1'
+author: "Richard McCormick"
+date: '2023-10-02'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library( tidyverse )
+```
+
+## Exercise #1
+## Create a vector of three elements (2,4,6) and name that vector vec_a. Create a second vector, vec_b, that contains (8,10,12). Add these two vectors together and name the result vec_c
+
+```{r}
+vec_a <- c( 2, 4, 6 )
+vec_b <- c( 8, 10, 12 )
+
+vec_c <- vec_a + vec_b
+vec_c
+```
+
+## Exercise #2
+## Create a vector, named vec_d, that contains only two elements (14,20). Add this vector to vec_a. What is the result and what do you think R did (look up the recycling rule using Google)? What is the warning message that R gives you?
+
+```{r}
+vec_d <- c( 14, 20 )
+vec_d <- vec_d + vec_a
+
+vec_d
+```
+
+#### The warning message given is: Warning: longer object length is not a multiple of shorter object length. 
+
+#### The vector adds the first two values together normally, but because vec_d is shorter than vec_a, the first term of vec_d is "recycled" and added to the third value in the vector, in order to make the two have equal lengths.
+
+## Exercise #3
+## Next add 5 to the vector vec_a. What is the result and what did R do? Why doesn’t in give you a warning message similar to what you saw in the previous problem?
+
+```{r}
+vec_a <- vec_a + 5
+
+vec_a
+```
+
+#### The result of adding 5 to vec_a is a new vector where all the original values are added to 5. R added 5 to each value in the vector.
+
+#### There was no warning message for this problem, because a vector can be modified by a constant. In mathematics, it is possible to add, subtract, multiply, or divide a vector or one-dimensional matrix by a constant value, as the constant value is equally applied to all elements of the vector.
+
+## Exercise #4
+## Generate the vector of even numbers  {2,4,6,…,20}
+### a. Using the seq() function and
+
+```{r}
+even_nums <- seq( from=2, to=20, by=2 )
+even_nums
+```
+
+### b. Using the a:b shortcut and some subsequent algebra. Hint: Generate the vector 1-10 and then multiple it by 2.
+
+```{r}
+even_nums <- c(1:10) * 2
+even_nums
+```
+
+## Exercise #6 
+## Generate a vector of 21 elements that are evenly placed between 0 and 1 using the seq() command and name this vector x.
+
+```{r}
+x <- seq( from=0, to=1, length.out=21 )
+x
+```
+
+## Exercise #8
+## Generate the vector {2,2,2,2,4,4,4,4,8,8,8,8} using the rep() command. You might need to check the help file for rep() to see all of the options that rep() will accept. In particular, look at the optional argument each=.
+
+```{r}
+rep_vec <- rep( c( 2, 4, 8 ), each=4 )
+rep_vec
+```
+\newpage
+## Exercise #11
+## Create and manipulate a data frame.
+### a. Create a data.frame named my.trees that has the following columns:
+### Girth = {8.3, 8.6, 8.8, 10.5, 10.7, 10.8, 11.0}
+### Height= {70, 65, 63, 72, 81, 83, 66}
+### Volume= {10.3, 10.3, 10.2, 16.4, 18.8, 19.7, 15.6}
+
+```{r}
+my.trees <- data.frame( Girth=c( 8.3, 8.6, 8.8, 10.5, 10.7, 10.8, 11.0 ),
+                        Height=c( 70, 65, 63, 72, 81, 83, 66 ),
+                        Volume=c( 10.3, 10.3, 10.2, 16.4, 18.8, 19.7, 15.6 ) )
+```
+
+### b. Without using dplyr functions, extract the third observation (i.e. the third row)
+
+```{r}
+third_obs <- my.trees[3,]
+third_obs
+```
+
+### c. Without using dplyr functions, extract the Girth column referring to it by name (don’t use whatever order you placed the columns in).
+
+```{r}
+girth_col <- my.trees['Girth']
+girth_col
+```
+
+### d. Without using dplyr functions, print out a data frame of all the observations except for the fourth observation. (i.e. Remove the fourth observation/row.)
+
+```{r}
+all_but_four <- my.trees[-4,]
+all_but_four
+```
+
+### e. Without using dplyr functions, use the which() command to create a vector of row indices that have a girth greater than 10. Call that vector index.
+
+```{r}
+index <- which( my.trees$Girth > 10, arr.ind=TRUE )
+index
+```
+
+### f. Without using dplyr functions, use the index vector to create a small data set with just the large girth trees.
+
+```{r}
+small_data <- my.trees[index,]
+small_data
+```
+
+\newpage
+### g. Without using dplyr functions, use the index vector to create a small data set with just the small girth trees.
+
+```{r}
+smol_data <- my.trees[-index,]
+smol_data
+```
+
+\newpage
+## Exercise #13
+## The following code creates a data.frame and then has two different methods for removing the rows with NA values in the column Grade. Explain the difference between the two.
+
+```{r}
+df <- data.frame(name= c('Alice','Bob','Charlie','Daniel'),
+                 Grade = c(6,8,NA,9))
+
+df[ -which(  is.na(df$Grade) ), ]
+df[  which( !is.na(df$Grade) ), ]
+```
+
+#### The first dataframe is using the which command to select all of the rows with NA values, and then keeping only the negation of the which command (i.e., the opposite of all rows which have NA in the Grade column).
+
+#### The second dataframe is selecting all the rows which do not have NA for the Grade column, and then keeping all of them (using the which command).
+
+\newpage
+## Exercise #14
+## Create and manipulate a list.
+
+### a. Create a list named my.test with elements
+### x = c(4,5,6,7,8,9,10)
+### y = c(34,35,41,40,45,47,51)
+### slope = 2.82
+### p.value = 0.000131
+
+```{r}
+my.test <- list( x = c( 4,5,6,7,8,9,10 ),
+                 y = c( 34,35,41,40,45,47,51 ),
+                 slope = 2.82,
+                 p.value = 0.000131 )
+
+my.test
+```
+
+### b. Extract the second element in the list.
+
+```{r}
+second_val <- my.test[2]
+
+second_val
+```
+
+### c. Extract the element named p.value from the list.
+
+```{r}
+pval <- my.test['p.value']
+pval
+```
+

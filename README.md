@@ -14,6 +14,7 @@ There are many projects spanning half a dozen different programming langauges co
 | CS499 | Contemporary Developments - Deep Learning | Python |
 | INF414 | Modelling the Spread of Infectious Diseases | R Markdown |
 | STA444 | Introduction to R | R Markdown |
+| STA445 | Data Wrangling & Exploration in R | R Markdown |
 
 ## Lower Division Coursework
 | Course ID | Course Name | Primary Language |

@@ -1,0 +1,77 @@
+---
+title: 'STA 445 - Homework #2'
+author: "Richard McCormick"
+date: '2023-10-02'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library( readxl )
+library( tidyverse )
+```
+
+## Exercise 1
+### (1 pts) Import the correct sheet from Example_5, without modifying it in any way.
+
+```{r}
+sheet.data <- read_excel( 'Example_5.xls', sheet='RawData' )
+
+sheet.data
+```
+
+### • ( ½ pt) How many blank columns were imported?
+
+#### Two blank columns were imported.
+
+### • ( ½ pt) Show the structure of the structure of the data using str(yourdataframe’sname)
+
+```{r}
+str( sheet.data )
+```
+
+### • (3 pts) Modify the data frame so that it only has 3 columns of 31 observations. Rename the columns to have the appropriate names of “Girth”, “Height,” and “Volume” if your step above did not automatically rename the columns.
+
+```{r}
+sheet.data <- read_excel( "Example_5.xls", 
+                          sheet="RawData", 
+                          skip=3,
+                          trim_ws=TRUE )[,1:3]
+
+sheet.data
+```
+
+### • Your output should have the answer to question in the 2nd bulletin point, the structure of the data frame, and the final data frame. Include all code used to clean up the data frame.
+
+```{r}
+str( sheet.data )
+
+sheet.data
+```
+\newpage
+## Exercise 2
+## 4 pts. In exercise 2,
+### • (1 pts) Import the correct sheet from Example_3, without modifying it in any way.
+
+```{r}
+sheet.data <- read_excel( 'Example_3.xls', sheet='data' )
+
+sheet.data
+```
+
+### • (2 pts) Use View(yourdataframe’sname). Write 2 – 3 sentences contrasting what you saw in the Excel file and what the data frame looks like to R.
+
+```{r}
+view( sheet.data )
+```
+
+#### In the Excel file, all the data was organized into columns and rows, with each column having a header. This is similar to what the R dataframe looks like, except that the headers are seperate from the data itself. The data appears to be structured very similarly in both cases, making use of both columns and rows.
+
+### • (1 pt) Modify the data frame so that it only has the 12 columns x 33 rows of data.
+
+```{r}
+sheet.data <- sheet.data[1:33,1:12]
+
+sheet.data
+```
+
