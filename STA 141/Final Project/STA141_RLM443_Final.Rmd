@@ -1,0 +1,120 @@
+---
+title: "STA 141 - Final Project"
+author: "Richard McCormick"
+date: '2023-12-05'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library( ggplot2 )
+library( tidyverse )
+library( ggpolar )
+library( ggOceanMaps )
+library( ggspatial )
+```
+# Introduction
+This paper will examine penguins within Antarctica, including their preferred residence locations, their physical attributes, and inferences on their behavior. 
+
+# 1. Loading Data
+Data is first loaded from the given CSV file. The coordinates of each island in the file are added for mapping purposes.
+
+```{r}
+penguins.data <- read.csv( "penguins_size.csv" )
+
+penguins.data$lat <- 1
+penguins.data$long <- 1
+
+penguins.data$lat <- ifelse( penguins.data$island == "Torgersen", -64.7666636, penguins.data$lat )
+penguins.data$long <- ifelse( penguins.data$island == "Torgersen", -64.083333, penguins.data$long )
+
+penguins.data$lat <- ifelse( penguins.data$island == "Dream", -64.733333, penguins.data$lat )
+penguins.data$long <- ifelse( penguins.data$island == "Dream", -64.233333, penguins.data$long )
+
+penguins.data$lat <- ifelse( penguins.data$island == "Biscoe", -65.433333, penguins.data$lat )
+penguins.data$long <- ifelse( penguins.data$island == "Biscoe", -65.5, penguins.data$long )
+```
+
+# 2. Examining Penguin Residency
+Penguins live across many different islands in the Antarctic. Some penguin species, such as the Gentoo and the Chinstrap, prefer to live entirely on a single island. This suggests a dislike for migration. On the other hand, the Adelie penguins were found on every island in the dataset. 
+
+```{r}
+ggplot( data=penguins.data, aes( x=species ) ) +
+  geom_bar( position="dodge", aes( fill=island ) ) + 
+  labs( title="Penguin Residency by Species",
+        x="Species of Penguin", y="Number of Penguins",
+        fill="Island" )
+```
+
+# 3. Geographic Penguin Residency
+Penguins live on very small islands in the Antarctic - islands so small that they often don't appear on many maps. The study area looks at Dream Island, Torgensen Island, and Biscoe Island. Dream and Torgensen Island are very close together, while Biscoe is a bit further away.
+
+```{r}
+numb=0.5
+
+long.max <- max( penguins.data$long ) + numb
+long.min <- min( penguins.data$long ) - numb
+lat.max <- max( penguins.data$lat ) + numb
+lat.min <- min( penguins.data$lat ) - numb
+
+basemap(limits = c( long.min, long.max, lat.min, lat.max ), glaciers = FALSE) +
+  geom_spatial_point(data = penguins.data, aes(x = long, y = lat, color = island ), size=4 ) + 
+  labs( title="Map of Penguin-Inhabited Islands (Zoomed-In)", color="Island" )
+```
+
+```{r}
+numb=15
+
+long.max <- max( penguins.data$long ) + numb
+long.min <- min( penguins.data$long ) - numb
+lat.max <- max( penguins.data$lat ) + numb
+lat.min <- min( penguins.data$lat ) - numb
+
+basemap(limits = c( long.min, long.max, lat.min, lat.max ), glaciers = FALSE) +
+  geom_spatial_point(data = penguins.data, aes(x = long, y = lat, color = island ), size=4 ) + 
+  labs( title="Map of Penguin-Inhabited Islands (Zoomed-Out)", color="Island" )
+```
+
+# 4. Flipper Length and Body Mass
+As partially aquatic animals, penguins heavily rely on the water for both movement and food. As a penguin grows bigger in size, they require larger flippers in order to maintain the same mobility.
+
+```{r}
+ggplot( data=penguins.data, aes( x=body_mass_g, y=flipper_length_mm,
+                                 color=species, group=species ) ) +
+  geom_point( ) +
+  geom_smooth( method="lm" ) + 
+  labs( title="Penguin Flipper Length by Body Mass",
+        x="Body Mass (grams)", y="Flipper Length (millimeters)",
+        color="Species" )
+```
+
+# 5. Culmin Size by Body Mass
+The culmin is part of a penguin's beak. By measuring the culmin, the size of the beak itself can be determined. By multipling culmin depth by culmin length, we can determine a rough estimate of the area of the culmin. Plotting this area against body mass paints an interesting picture.
+
+```{r}
+penguins.data$total.beak <- penguins.data$culmen_length_mm * penguins.data$culmen_depth_mm
+
+ggplot( data=penguins.data, aes( x=body_mass_g, y=total.beak,
+                                 group=species, color=species ) ) +
+  geom_point() +
+  geom_smooth( method="lm" ) +
+  labs( title="Culmen (Beak) Size by Body Mass", x="Body Mass (grams)",
+        y="Culmen Size (millimeters squared)", color="Species" )
+```
+We can see that culmin size alone does not always lead to bigger penguins. Gentoo penguins, for example, are the biggest penguin in the dataset, yet their total culmin sizes are roughly on par with Adelie penguins, which are the smallest.
+
+# 6. Culmin Dimensions by Species
+Looking closer at the culmin, we can see that each species has a different shaped culmin. Gentoo penguins have a very long, but very shallow culmin, almost like a spear. On the other hand, Adelie penguins have very short, but very deep culmins, like a net. These differences in culmin dimensions could point towards both different hunting strategies between species, and different prey.
+
+```{r}
+penguins.data.two <- penguins.data[ grep("MALE", penguins.data$sex), ]
+ggplot( data=penguins.data.two, aes( x=culmen_length_mm, y=culmen_depth_mm,
+                                 group=species, color=species, shape=sex) ) +
+  geom_point( size=3 ) +
+  geom_smooth( method="lm" ) +
+  labs( title="Culmen Length by Culmen Width", x="Culmen Length (millimeters)",
+        y="Culmen Depth (millimeters)", color="Species", shape="Sex" )
+```
+
+# Conclusion
+While penguins may come in many different shapes and sizes, they share characteristics and personalities. Each penguin requires adequately sized flippers to maneuver through the water, but the shape and size of their beak differs based on their strategies and preferences for hunting. Some penguins, like the Adelie, migrate often and can be found in many different islands, while others prefer to stay stationary. 

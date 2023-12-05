@@ -1,0 +1,3 @@
+"0",""
+"0","qqnorm( resid( best.model ),"
+"0","        main=""Q-Q Plot for Transformed Model"")"

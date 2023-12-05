@@ -1,0 +1,100 @@
+---
+title: "STA445 - Assignment 8"
+author: "Richard McCormick"
+date: '2023-11-14'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library( tidyverse )
+library( rvest )
+library( stringi )
+```
+
+## 1. (6 points) At the Insurance Institute for Highway Safety, they have data about human fatalities in vehicle crashes. From this web page, import the data from the Fatal Crash Totals data table and produce a bar graph gives the number of deaths per 100,000 individuals. Be sure to sort the states by highest to lowest mortality. Hint: If you have a problem with the graph being too squished vertically, you can set the chunk options fig.height or fig.width to make the graph larger, but keeping the font sizes the same. The result is that the text is more spread apart. The chunk options out.height and out.width shrink or expand everything in the plot. By making the fix.XXX options large and out.XXX options small, you are effectively decreasing the font size of all the elements in the graph. The other trick is to reset the font size using a theme element_text option: theme(text = element_text(size = 9)).
+
+```{r}
+url = 'https://www.iihs.org/topics/fatality-statistics/detail/state-by-state'
+page <- read_html(url)
+data <- page %>%
+  html_nodes('table') %>%
+  .[[1]] %>% 
+  html_table(header=TRUE, fill=FALSE)
+
+names(data) <- data[1,]
+data <- data[-1,]
+
+data$`Deaths per 100,000 population` <- as.numeric( gsub( ",", "", data$`Deaths per 100,000 population` ) )
+
+ggplot( data=data, aes( x=reorder( State, -`Deaths per 100,000 population` ), 
+                        y=`Deaths per 100,000 population` ) ) +
+  geom_bar( stat='identity' ) +
+  theme(axis.text.x = element_text(angle = 45, hjust=1) ) +
+  labs( title="Fatal Car Accidents per 100,000 Population by State",
+        x="State" )
+```
+
+## 2. (7 points) From the same IIHS website, import the data about seat belt use. Join the Fatality data with the seat belt use and make a scatter plot of percent seat belt use vs number of fatalities per 100,000 people.
+
+```{r}
+belt.data <- page %>%
+  html_nodes('table') %>%
+  .[[5]] %>% 
+  html_table(header=TRUE, fill=FALSE)
+
+names(belt.data) <- belt.data[1,]
+belt.data <- belt.data[-1,]
+belt.data = belt.data[-1,]
+
+names(belt.data) <- c("State", 
+                      "Percent of Observed Seat Belt Use", 
+                      "Restrined Fatally Injured Occupants", 
+                      "Percent of Restrained Fatally Injured Occupants",
+                      "")
+
+data <- merge( data, belt.data )
+
+ggplot( data=data, 
+        aes( x=`Percent of Observed Seat Belt Use`, 
+             y=`Deaths per 100,000 population` ) ) +
+  geom_point() +
+  labs( title="Percent of Seatbelt Use vs. Traffic Fatalities per 100,000 Population" )
+```
+
+## 3. (Skip: Come back to it later if you are interested.) From the NAU sub-reddit, extract the most recent threads.
+
+```{r}
+url <- 'https://www.reddit.com/r/NAU/'
+page <- read_html(url)
+
+HeadLines <- page %>%
+  html_nodes('shreddit-post') %>%    # Grab just the headlines
+  html_text()  # Convert the <a>Text</a> to just Text
+
+reddit.data <- data.frame( HeadLines) %>%
+  mutate( User = str_extract( HeadLines, "u/\\w*") ) %>%
+  mutate( strings = strsplit(as.character(HeadLines), "\\n") )
+
+i <- 1
+
+for (string in reddit.data$strings)
+{
+  new_str <- str_trim( string )
+  new_str <- new_str[new_str != ""]
+  
+  reddit.data[i, "Title"] <- new_str[3]
+  reddit.data[i, "Post"] <- new_str[4]
+  
+  i <- i + 1
+}
+
+rownames( reddit.data ) <- NULL
+reddit.data$HeadLines <- NULL
+reddit.data$strings <- NULL
+
+
+print( reddit.data )
+print( reddit.data$Post )
+```
+

@@ -1,0 +1,7 @@
+"0","ggplot( data=penguins.data, aes( x=body_mass_g, y=flipper_length_mm,"
+"0","                                 color=species, group=species ) ) +"
+"0","  geom_point( ) +"
+"0","  geom_smooth( method=""lm"" ) + "
+"0","  labs( title=""Penguin Flipper Length by Body Mass"","
+"0","        x=""Body Mass (grams)"", y=""Flipper Length (millimeters)"","
+"0","        color=""Species"" )"

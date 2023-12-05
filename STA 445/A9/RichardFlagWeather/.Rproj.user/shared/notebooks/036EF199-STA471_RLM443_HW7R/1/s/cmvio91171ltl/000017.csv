@@ -1,0 +1,2 @@
+"0","abline( mean( resid( anderson.bancroft.model ) ), "
+"0","        sd( resid( anderson.bancroft.model ) ) )"

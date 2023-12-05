@@ -1,0 +1,3 @@
+"0","plot( fitted( best.model ), resid( model.4 ), xlab='Fitted', ylab='Residual', main='Residual Plot for Transformed Model' )"
+"2","Error in resid(model.4) : object 'model.4' not found
+"

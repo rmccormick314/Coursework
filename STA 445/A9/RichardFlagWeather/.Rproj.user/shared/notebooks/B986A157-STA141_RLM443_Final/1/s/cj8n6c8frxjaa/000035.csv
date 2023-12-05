@@ -1,0 +1,5 @@
+"0","ggplot( data=penguins.data, aes( x=species ) ) +"
+"0","  geom_bar( position=""dodge"", aes( fill=island ) ) + "
+"0","  labs( title=""Penguin Residency by Species"","
+"0","        x=""Species of Penguin"", y=""Number of Penguins"","
+"0","        fill=""Island"" )"

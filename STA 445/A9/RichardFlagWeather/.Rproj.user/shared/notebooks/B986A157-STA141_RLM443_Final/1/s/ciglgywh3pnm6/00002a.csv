@@ -1,0 +1,7 @@
+"0","penguins.data.two <- penguins.data[ grep(""MALE"", penguins.data$sex), ]"
+"0","ggplot( data=penguins.data.two, aes( x=culmen_length_mm, y=culmen_depth_mm,"
+"0","                                 group=species, color=species, shape=sex) ) +"
+"0","  geom_point( size=3 ) +"
+"0","  geom_smooth( method=""lm"" ) +"
+"0","  labs( title=""Culmen Length by Culmen Width"", x=""Culmen Length (millimeters)"","
+"0","        y=""Culmen Depth (millimeters)"", color=""Species"", shape=""Sex"" )"

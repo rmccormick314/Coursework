@@ -1,0 +1,64 @@
+---
+title: "STA471 - Homework 5"
+author: "Richard McCormick"
+date: '2023-10-28'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## d. Find the Hat Matrix
+
+```{r}
+# Set up X matrix
+X_vals = c(1, 1, 1, 1, 1, 3, 6, 4)
+X = matrix( X_vals, nrow=4, ncol=2 )
+X
+
+# Set up (X * Xt)-1 Matrix (Found in Part C)
+XtXinv_vals = c( -(31/67), 7/67, 7/67, -(1/134) )
+XtXinv = matrix( XtXinv_vals, nrow=2, ncol=2 )
+XtXinv
+
+# Setup Xt matrix
+Xt = t( X )
+Xt
+
+answer.D = X %*% XtXinv %*% Xt
+answer.D
+```
+## e. Find b
+```{r}
+y_vals = c( 4.2, 2.3, 2.7, 2.0 )
+Y = matrix( y_vals, nrow=4, ncol=1 )
+
+b = XtXinv %*% Xt %*% Y
+b
+```
+
+## f. Find Yhat
+```{r}
+H <- answer.D
+
+Y.hat <- H %*% Y
+Y.hat
+```
+
+# g. Find e
+
+```{r}
+e = Y - Y.hat
+e
+```
+
+```{r}
+X <- c(1, 3, 6, 4)
+Y <- c(4.2, 2.3, 2.7, 2.0)
+dataframe <- data.frame( X, Y )
+SLR <- lm( Y ~ X )
+summary(SLR)
+coef(SLR)
+```
+

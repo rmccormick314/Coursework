@@ -1,0 +1,97 @@
+---
+title: 'STA 141 Worksheet 9'
+author: 'Richard McCormick'
+date: 'November 14, 2023'
+output: pdf_document
+classoption: dvipsnames
+fontsize: 12pt
+geometry: margin=1.25cm
+header-includes:
+   - \usepackage{amssymb}
+   - \let\rmarkdownfootnote\footnote%
+   - \def\footnote{\protect\rmarkdownfootnote}
+   - \usepackage{titling}
+   - \setlength{\droptitle}{-2em}
+   - \pretitle{\vspace{\droptitle}\centering\huge}
+   - \posttitle{\par}
+   - \preauthor{\centering\large}
+   - \postauthor{\par}
+   - \predate{\centering\large}
+   - \postdate{\par}
+---
+
+# \color{Blue} \textbf{Due Date: Tuesday, November 28, 2023 before 11:00am.}
+
+## Instructions
+\color{Black}
+Worksheets must be turned in as a PDF file through Canvas. The worksheet is worth a total of \textbf{15 points}, which is 3 percent of your overall grade.
+
+## \color{Blue} Exercises
+
+Begin by running the following code block to add the packages we need to use to our library. If you didn't install the `maps` package previsouly then you will need to run `install.packages("maps")` before adding it to your library.
+
+```{r libraries, include=FALSE}
+library(tidyverse)
+library(maps)
+```
+
+### \color{Blue} Exercise 1
+
+\color{Dandelion} \textbf{(a)} \color{Black} This question will use the `Gapminder` dataset, which is available as a csv file on Canvas. We want to use this data to create a choropleth map showing the GDP per Capita of each country in 2005. Import the dataset here:
+
+```{r}
+gap.data <- read_csv( 'Gapminder.csv' )
+```
+
+\color{Dandelion} \textbf{(b)} \color{Black} Filter your data so that you only have data from the year 2005.
+
+```{r}
+gap.data.2005 <- gap.data %>% filter( year==2005 )
+```
+
+\color{Dandelion} \textbf{(c)} \color{Black} Subset your data to only keep `Country` and `GDP_per_capita` variables.
+
+```{r}
+gap.data.2005 <- gap.data.2005 %>%
+  subset( select = c( country, GDP_per_capita ) )
+```
+
+\color{Dandelion} \textbf{(d)} \color{Black} Now import the world map from the `maps` package. (Run `?map_data` if you need help).
+
+```{r}
+world <- map_data( "world" )
+```
+
+\color{Dandelion} \textbf{(e)} \color{Black} Merge your GDP dataset with the world map dataset. Hint: Don't forget the arrange step!
+
+```{r}
+gap.data.merged <- merge( world, gap.data.2005, by.x="region", by.y="country" )
+gap.data.merged <- arrange( gap.data.merged, group, order )
+```
+
+\color{Dandelion} \textbf{(f)} \color{Black} Plot your data as a choropleth map using `geom_polygon()`.
+
+```{r}
+ggplot( data=gap.data.merged, 
+        aes( long, lat, group=group, fill=GDP_per_capita ) ) +
+  geom_polygon()
+```
+
+\color{Dandelion} \textbf{(g)} \color{Black} Change the color scale so that it goes from white (low GDP) to a color of your choosing (high GDP), and change the projection to the Mercator projection.
+
+```{r}
+ggplot( data=gap.data.merged, 
+        aes( long, lat, group=group, fill=GDP_per_capita ) ) +
+  geom_polygon() +
+  scale_fill_gradient( low="white", high="green" ) +
+  labs( title="GDP per Capita by Country", x="Latitude", y="Longitude",
+        fill="GDP per Capita") +
+    coord_map( "mercator", xlim=c( -180, 180 ) )
+
+```
+
+\color{Dandelion} \textbf{(h)} \color{Black} GDP per capita is a general measure of a country's wealth. With this knowledge, make 3 observations about your map.
+
+1. Countries further from the equator tend to have higher GDP.  
+2. Countries with less natural resources or more civil strife tend to have lower GDP.  
+3. Highest GDP's tend to be in Europe.

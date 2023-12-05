@@ -1,0 +1,12 @@
+---
+title: "STA445 - Assignment 9"
+author: "Richard McCormick"
+date: '2023-11-17'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1.

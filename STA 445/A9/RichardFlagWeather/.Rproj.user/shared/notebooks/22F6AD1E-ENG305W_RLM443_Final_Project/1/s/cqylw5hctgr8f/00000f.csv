@@ -1,0 +1,2 @@
+"0","ggplot( data=dream.data, aes( x=Sleep.Quality, y=dream.quality ) ) +"
+"0","  geom_point()"

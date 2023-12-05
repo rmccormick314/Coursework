@@ -1,0 +1,7 @@
+"0","nums <- unlist(lapply(dream.data, is.numeric), use.names = FALSE)  "
+"0","test <- dream.data[,nums]"
+"0","test[is.na(test)] <- 0"
+"0",""
+"0","mydata.cor = cor( test, method = c(""spearman""))"
+"0","palette = colorRampPalette(c(""green"", ""yellow"", ""red"")) (20)"
+"0","heatmap(x = mydata.cor, col = palette, symm = TRUE, cexRow=0.5, cexCol=0.5)"

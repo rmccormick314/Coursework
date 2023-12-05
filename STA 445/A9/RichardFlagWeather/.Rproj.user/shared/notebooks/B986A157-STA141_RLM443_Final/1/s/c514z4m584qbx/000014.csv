@@ -1,0 +1,8 @@
+"0","penguins.data$total.beak <- penguins.data$culmen_length_mm * penguins.data$culmen_depth_mm"
+"0",""
+"0","ggplot( data=penguins.data, aes( x=body_mass_g, y=total.beak,"
+"0","                                 group=species, color=species ) ) +"
+"0","  geom_point() +"
+"0","  geom_smooth( method=""lm"" ) +"
+"0","  labs( title=""Culmen (Beak) Size by Body Mass"", x=""Body Mass (grams)"","
+"0","        y=""Culmen Size (millimeters squared)"", color=""Species"" )"

@@ -1,0 +1,96 @@
+---
+title: "STA 471 - Homework 9"
+author: "Richard McCormick"
+date: '2023-12-03'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. Problem \textbf{T} on page 325 of the textbook.
+
+```{r}
+X <- c( 18, 20, 24, 28, 30, 33, 36, 48, 60, 40, 42, 45, 62, 71, 75 )
+Y <- c( 4.8, 5.5, 5.8, 6.0, 6.5, 6.6, 6.7, 7.0, 7.3, 3.3, 3.8, 4.1, 5.0, 5.5, 6.0 )
+D <- c( 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1 )
+
+hw9.data <- data.frame( Y, X, D )
+```
+
+## a. Define a suitable numerical dummy variable *D* to seperate the two groups(*f* and *m*) of data. Fit the model $Y = \beta_0 + \beta_1X + \beta_2D + \beta_3DX + \epsilon$ and give (1) the fitted equation, (2) the fitted line for each group (*f* and *m*) based on the fitted equation.
+
+```{r}
+hw9.model <- lm( Y ~ X + D + I( D * X ) )
+summary( hw9.model )
+```
+
+### 1. Give the Fitted Equation   
+The fitted equation for the model is:  
+$Y = 4.518222 + 0.052310X - 3.640652D + 0.014659DX$
+
+### 2. Give the Fitted Line for each group (*f* and *m*) based on the fitted equation.  
+The fitted line for \textbf{f} is:  
+$Y = 4.518222 + 0.052310X$  
+
+The fitted line for \textbf{m} is:  
+$Y = 0.877572 + 0.066969X$
+
+## b. Test to determine whether the two straight lines are parallel at $\alpha = 0.05$.
+
+### I. Hypothesis
+$H_0: \beta_3 = 0$. The lines are parallel.  
+$H_A: \beta_3 \neq 0$. The lines are not parallel.
+
+### II. Test Statistics
+Test Statistic: $t = \frac{b_3 - \beta_{3}}{se(b{3})}$  
+Observed Statistic: $t = 1.188$
+
+Critical T-Value ($t_{15-3-1} = t_{11}$): 2.201
+
+### III. Conclusion
+As $t_{obs} = 1.188 < 2.201 = t_{11}$, we can \textbf{accept} the null hypothesis and conclude that the lines are parallel with each other.
+
+## c. Test to determine whether the two straight lines are coincident at $\alpha = 0.05$.
+
+### I. Hypothesis
+$H_0: \beta_2 = \beta_3 = 0$. The lines are coincident.  
+$H_A: At\ least\ one\ of \beta_2, \beta_3 \neq 0$. The lines are not coincident.
+
+### II. Test Statistics
+Test Statistic: $F = \frac{MS_{reg}}{MS_{resid}}$
+Observed Statistic: $F_{obs}$ = 62.85  
+
+Critical f-Value ($f_{3, 11}$): 2.66
+
+### III. Conclusion
+As $f_{obs} = 62.85 > 2.66 = f_{3,11}$, we can \textbf{reject} the null hypothesis and accept the alternative hypothesis that the lines are not coincident.  
+
+## d. Fit seperate straight-line regressions of *Y* on *X* for *f* and *m*, respectively. How do the fitted lines here compare to the fitted lines in part \textbf{a}?
+
+```{r}
+hw9.data.f <- subset( hw9.data, D == 0 )
+hw9.model.f <- lm( Y ~ X, data=hw9.data.f )
+summary( hw9.model.f )
+```
+The fitted model for *just* \textbf{f} is:
+$Y = 4.518222 + 0.052310X$  
+The model in part \textbf{a} was:
+$Y = 4.518222 + 0.052310X$  
+
+The two models are identical.
+
+```{r}
+hw9.data.m <- subset( hw9.data, D == 1 )
+hw9.model.m <- lm( Y ~ X, data=hw9.data.m )
+summary( hw9.model.m )
+```
+
+The fitted model for *just* \textbf{m} is:
+$Y = 0.877570 + 0.066969X$  
+The model in part \textbf{a} was:
+$Y = 0.877572 + 0.066969X$  
+
+The two models are identical.
+

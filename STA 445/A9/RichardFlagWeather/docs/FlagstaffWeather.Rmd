@@ -1,0 +1,20 @@
+---
+title: "Flagstaff_Weather"
+author: "Richard McCormick"
+date: '2023-11-20'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(RichardFlagWeather)
+```
+
+## Flagstaff Weather
+
+```{r}
+ggplot( data=Flagstaff_Weather, aes( x=DATE, y=TMAX ) ) +
+  geom_line()
+```
+

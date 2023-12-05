@@ -15,6 +15,7 @@ There are many projects spanning half a dozen different programming languages co
 | INF414 | Modelling the Spread of Infectious Diseases | R Markdown |
 | STA444 | Introduction to R | R Markdown |
 | STA445 | Data Wrangling & Exploration in R | R Markdown |
+| STA471 | Regression Analysis | R Markdown |
 
 ## Lower Division Coursework
 | Course ID | Course Name | Primary Language |

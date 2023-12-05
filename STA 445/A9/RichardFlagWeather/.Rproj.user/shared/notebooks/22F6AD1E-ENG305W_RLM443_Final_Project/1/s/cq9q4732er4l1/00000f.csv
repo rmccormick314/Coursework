@@ -1,0 +1,4 @@
+"0","ggplot( data=dream.data, aes( x=dream.quality ) ) +"
+"0","  geom_bar( aes( fill=supplements ), position=""dodge"" ) +"
+"0","  labs( title=""Dream Quality by Oneirogens Taken"","
+"0","        x=""Dream Quality"", y=""Number of Occurances"", fill=""Oneirogens"" )"

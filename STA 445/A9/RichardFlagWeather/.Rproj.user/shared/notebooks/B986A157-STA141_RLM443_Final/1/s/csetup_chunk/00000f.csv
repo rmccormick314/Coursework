@@ -1,0 +1,13 @@
+"0","knitr::opts_chunk$set(echo = TRUE)"
+"0","library( ggplot2 )"
+"0","library( tidyverse )"
+"0","library( ggpolar )"
+"0","library( ggOceanMaps )"
+"2","ggOceanMaps: Setting data download folder to a temporary folder
+C:\Users\richard\AppData\Local\Temp\Rtmp6XFPIJ. This means that any downloaded map data
+need to be downloaded again when you restart R. To avoid this problem, change the
+default path to a permanent folder on your computer. Add following lines to your
+.Rprofile file: {.ggOceanMapsenv <- new.env(); .ggOceanMapsenv$datapath <-
+'YourCustomPath'}. You can use usethis::edit_r_profile() to edit the file.
+'~/ggOceanMapsLargeData' would make it in a writable folder on most operating systems.
+"

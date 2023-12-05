@@ -1,0 +1,4 @@
+"0","ggplot(data=dream.data, aes(x=dreamed) ) +"
+"0","  geom_bar( aes( by=supplements, fill=supplements ), position=""dodge"") +"
+"0","  facet_wrap( dream.quality~Sleep.Quality, labeller=""label_both"" )"
+"2","Warning: [38;5;255mIgnoring unknown aesthetics: [32mby[38;5;255m[39m"

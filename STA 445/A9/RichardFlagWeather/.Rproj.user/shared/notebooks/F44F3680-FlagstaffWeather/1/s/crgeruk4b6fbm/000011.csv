@@ -1,0 +1,2 @@
+"0","ggplot( data=Flagstaff_Weather, aes( x=DATE, y=TMAX ) ) +"
+"0","  geom_line()"

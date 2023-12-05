@@ -1,0 +1,170 @@
+---
+title: "STA471 - Homework 6"
+author: "Richard McCormick"
+date: '2023-11-09'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library( ggplot2 )
+library( alr4 )
+library( EnvStats )
+library( dplyr )
+```
+
+## 1. Using least squares procedures, estimate the b’s in the model:
+$Y$ = $\beta_0X_0 + \beta_1X_1+\beta_2X_2+\epsilon$
+
+```{r}
+X1 <- c( 1,4,9,11,3,8,5,10,2,7,6 )
+X2 <- c( 8,2,-8,-10,6,-6,0,-12,4,-2,-4 )
+Y <- c( 6,8,1,0,5,3,2,-4,10,-3,5 )
+
+data <- data.frame( Y, X1, X2 )
+model <- lm( Y ~ X1 + X2 )
+summary( model )
+
+print( paste( "b1 = ", coef( model )[2] ) )
+print( paste( "b2 = ", round( coef( model )[3], 3 ) ) )
+```
+
+\newpage
+## 2. Write out the analysis of variance table.
+
+```{r}
+anova( model )
+
+RSS <- sum( anova( model )[1:2, 2] )
+print( paste( "Regression Sum of Squares:", RSS ) )
+
+TSS <- sum( anova( model )[,2] )
+print( paste( "Total Sum of Squares:", TSS ) )
+
+```
+
+\newpage
+## 3. Using $\alpha$ = 0.05, test to determine if the overall regression is statistically significant.
+
+\textbf{I. Hypothesis}\newline
+$H_0$: $\beta_1$ = $\beta_2$ = 0 \newline
+$H_A$: At least one of: $\beta_1$, $\beta_2$ $\neq$ 0 \newline
+
+```{r}
+summary( model )
+```
+
+\textbf{II. Test Statistic}  
+Test Statistic: $F$ = $\frac{MS_{reg}}{MS_{resid}}$ \newline
+Observed Statistic: $F_{obs}$ = 7.176, from Summary Table. \newline
+p-value = 0.01641, from Summary Table. \newline
+
+\textbf{III. Conclusion}  
+P-value = 0.01641 < $\alpha$ = 0.05.  
+At the $\alpha = 0.05$ level of significance, the overall regression model is statistically significant. Thus, we \textbf{reject} the null hypothesis, and accept the alternative hypothesis.
+
+\newpage
+
+## 4. Calculate the square of the multiple correlation coefficient, namely, R2. What portion of the total variation about images is explained by the two variables?
+
+```{r}
+summary( model )
+
+print( paste( "R-squared value is:", summary( model )$r.squared ) )
+```
+The portion of total variation about images explained by the two variables in this model is 64.21%
+
+\newpage
+## 5. The inverse of the X'X matrix for this problem is as follows:
+
+$\begin{bmatrix}
+4.3705 & -0.8495 & -0.4086\\
+-0.8495 & 0.1690 & 0.0822\\
+-0.4086 & 0.0822 & 0.0422\\
+\end{bmatrix}$
+
+```{r}
+xinv_mat <- matrix( c( 4.3705, -0.8495, -0.4086, -0.8495, 0.1690, 0.0822,
+                       -0.4086, 0.0822, 0.0422 ), 3, 3 )
+```
+
+## Using the results of the analysis of variance table with this matrix, calculate estimates of the following:
+
+## a. Variance and confidence intervals of b1.
+
+```{r}
+# 1. Find s^2 = RSS / (n - 2)
+s.squared = ( deviance(model) / 8 )
+
+# 2. Create variance matrix, using (X'X)^-1
+var_mat <- s.squared * xinv_mat
+
+# 3. Get the i-1th element
+b1.variance <- var_mat[2, 2]
+
+print( paste( "Variance of b1 =", b1.variance ) )
+
+
+# 95% confidence interval for b1
+confint( model, level=0.95 )[2,]
+```
+
+## b. Variance and confidence intervals of b2.
+
+```{r}
+# Get the i-1th element
+b2.variance <- var_mat[3,3]
+
+print( paste( "Variance of b2 =", b2.variance ) )
+
+# 95% confidence interval for b2
+confint( model, level=0.95 )[3,]
+```
+
+\newpage
+## 6. How useful is the regression using $X_1$ alone? What does $X_2$ contribute, given that $X_1$ is already in the regression?
+
+```{r}
+writeLines( paste( round( ( anova( model )[1,2] / RSS )*100, 3 ), 
+            "% of the variation in Y is explained by the regression using X1 alone." ) )
+
+model.X1 <- lm( Y ~ X1 + X2 )
+anova( model.X1 )
+RSS.X1 <- sum( anova( model.X1 )[1, 2] )
+SS.X1 <- RSS - RSS.X1
+
+writeLines( paste( round( ( SS.X1/RSS )*100, 3 ), 
+              "% of the variation in Y is explained by the regression using X2,\n", 
+              "given that X1 is already in the model." ) )
+```
+
+\newpage
+## 7. How useful is the regression using $X_2$ alone? What does $X_1$ contribute, given that $X_2$ is already in the regression?
+
+```{r}
+writeLines( paste( round( ( anova( lm( Y ~ X2 ) )[1,2] / RSS ) * 100, 3 ), 
+              "% of the variation in Y is explained by the regression using X2 alone." ) )
+
+model.X2 <- lm( Y ~ X2 + X1 )
+anova( model.X2 )
+RSS.X2 <- sum( anova( model.X2 )[1, 2] )
+SS.X2 <- RSS - RSS.X2
+
+writeLines( paste( round( ( SS.X2 / RSS ) * 100, 3 ), 
+              "% of the variation in Y is explained by the regression using X1,\n", 
+              "given that X2 is already in the model." ) )
+```
+
+\newpage
+## 8. What are your conclusions?
+
+Given the model and our variables, it is reasonable to conclude that $X_1$ alone contributes the most to the explanation of variation in Y in this model, with more than 95% of total variation being explained. The p-value for $X_2$ is very high, which does not support a conclusion that $X_2$ contributes much to the model. The model would be more accurate when only using $X_1$, as $X_2$ does not contribute much to the overall regression.
+
+### a. Fit an appropriate model to the data using $\alpha$ = 0.05 and compare the effectiveness of the appropriate model with the full model by adjusted $R^2$.
+
+```{r}
+fit.model <- lm( Y ~ X1 )
+summary( fit.model )
+summary( model )
+```
+The adjusted R-squared value is higher when only using $X_1$ - 0.5677 for the more appropriate model, and 0.5526 for the full model.

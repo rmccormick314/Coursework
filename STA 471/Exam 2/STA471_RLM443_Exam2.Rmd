@@ -1,0 +1,162 @@
+---
+title: "STA471 - Exam 2"
+author: "Richard McCormick"
+date: '2023-11-09'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library( ggplot2 )
+```
+
+```{r}
+exam.data <- readxl::read_excel( "exam2data.xlsx")
+```
+
+## 1. In an automobile fuel efficiency study, the following data were collected on a simple random sample of 38 cars. The variables measured are $Y$ = Miles per gallon, $X_1$ = Weight (1,000lb), $X_2$ = Engine displacement (cubic inches), $X_3$ = Number of cylinders, $X_4$ = Horsepower, $X_5$ = Acceleration from 0 to 60 mph (sec).
+
+### a. (10 points) Fit the model $Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \beta_3X_3 + \beta_4X_4 + \beta_5X_5 + \epsilon$ and give the fitted equation relating $Y$ to all five predictor variables. Interpret the estimated coefficient of $X_3$ in the context of the problem.
+
+```{r}
+model <- lm( data=exam.data, Y ~ X1 + X2 + X3 + X4 + X5 )
+summary( model )
+```
+\newpage
+### b. (6 points) Find the predicted Y value for a car with $X_1$ = 3.00, $X_2$ = 250, $X_3$ = 6, $X_4$ = 125, $X_5$ = 15, and construct a 99% prediction inverval for the $Y$ value.
+
+```{r}
+prediction <- predict( model, 
+                       newdata=data.frame( X1=3.00,
+                                           X2=250,
+                                           X3=6,
+                                           X4=125,
+                                           X5=15), 
+                       level=0.99 )
+
+print( paste( "Predicted value for Y is: ", prediction ) )
+
+pred_interval = predict( model, 
+                         interval="prediction", 
+                         level=0.99,
+                         newdata=data.frame( X1=3.00,
+                                           X2=250,
+                                           X3=6,
+                                           X4=125,
+                                           X5=15) 
+                         )
+
+pred_interval
+```
+\newpage
+### c. (6 points) Find and interpret the value of $R^2$ for the model that includes all five predictor variables.
+
+```{r}
+summary( model )
+```
+\newpage
+### d. (10 points) How useful is the regression using $X_1$ alone? What does $X_3$ contribute, given $X_1$ and $X_2$ are already in the regression?
+
+```{r}
+anova( model )
+RegSS <- sum( anova( model )[1:5, 2] )
+writeLines( paste( round( ( anova( model )[1,2] / RegSS )*100, 3 ), 
+            "% of the variation in Y is explained by the regression using X1 alone." ) )
+
+RegSS.X3 <- sum( anova( model )[1:2, 2] )
+SS.X1 <- RegSS - RegSS.X3
+
+writeLines( paste( round( ( SS.X1/RegSS )*100, 3 ), 
+              "% of the variation in Y is explained by the regression using X3,\n", 
+              "given that X1 and X2 are already in the model." ) )
+```
+\newpage
+### e. (10 points) Test to determine whether the overall regression is significant at $\alpha$ = 0.05.
+
+```{r}
+overall_p <- function(my_model) {
+    f <- summary(my_model)$fstatistic
+    p <- pf(f[1],f[2],f[3],lower.tail=F)
+    attributes(p) <- NULL
+    return(p)
+}
+
+summary( model )
+
+#extract overall p-value of model
+print( paste( "Model p-value is:", overall_p( model ) ) )
+```
+\newpage
+### f. (10 points) Test whether there is a linear relationship between $X_4$ and $Y$ in the model that includes all the other predictor variables. Use $\alpha$ = 0.05.
+
+```{r}
+anova( model )
+```
+
+\newpage
+### g. (10 points) Construct a 95% confidence interval for $\beta_5$ and interpret the confidence interval. What is your conclusion in the context of the problem based on the confidence interval?
+
+```{r}
+# Get the i-1th element
+b5.variance <- vcov( model )[6,6]
+
+print( paste( "Variance of b5 =", b5.variance ) )
+
+# 95% confidence interval for b5
+confint( model, level=0.95 )[6,]
+```
+\newpage
+### h. (12 points) Test whether the variables $X_2$, $X_3$, and $X_5$ jointly have a linear relationship with Y in the model that includes all five predictor variables. Use $\alpha$ = 0.05.
+
+```{r}
+SSreg.reduced <- sum( anova( model )[2:3, 2] ) + sum( anova( model )[5, 2] )
+print( paste( "SSreg for X2, X3, and X5:", SSreg.reduced ) )
+anova( model )
+SSreg <- sum( anova( model )[1:5, 2] )
+print( paste( "SSreg for full model:", SSreg ) )
+
+SSresid <- sum( anova( model )[6, 2] )
+
+f.val <- ((SSreg - SSreg.reduced)/2) / ( ( SSresid )/4 )
+print( paste( "Observed F-value:", f.val ) )
+```
+
+\newpage
+### i. (10 points) Use the backward elimination procedure to find an appropriate model for the data at $\alpha$ = 0.05. What is the fitted equation for the model?
+
+```{r}
+summary( model )
+
+model.2 <- lm( data=exam.data, Y ~ X1 + X2 + X4 + X5 )
+summary( model.2 )
+
+model.3 <- lm( data=exam.data, Y ~ X1 + X2 + X4 )
+summary( model.3 )
+
+model.4 <- lm( data=exam.data, Y ~ X1 + X2 )
+summary( model.4 )
+```
+
+\newpage
+### j. (16 points) What are the assumptions for the model? Check the assumptions by a residual plot and a $Q-Q$ plot of the residuals. In addition, conduct Shapiro and Wilk test for normality based on residuals.
+
+```{r}
+exam.data$resid <- resid(model)
+
+ggplot( data=exam.data, aes( x=Y, y=resid ) ) +
+  geom_point() + 
+  geom_line( aes( y=0 ) ) +
+  labs( title="Residual Plot", y="Residuals", x="Y-Values")
+```
+
+```{r}
+ggplot( data = exam.data, aes( sample=resid ) ) +
+  stat_qq() +
+  geom_qq_line() +
+  labs( title="The Q-Q Plot for Residuals", x="Theoretical Quantiles",
+        y="Sample Quantiles" )
+```
+```{r}
+shapiro.test( resid( model ) )
+```
+

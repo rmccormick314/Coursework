@@ -1,0 +1,1 @@
+"0","plot( fitted(model.4), resid(model.4), xlab='Fitted', ylab='Residual', main='Residual Plot for Appropriate Model (Model 4)')"

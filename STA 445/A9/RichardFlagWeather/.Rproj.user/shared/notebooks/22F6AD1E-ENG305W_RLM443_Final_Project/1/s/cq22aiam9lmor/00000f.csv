@@ -1,0 +1,7 @@
+"0","emote.dream.data$Oneirogens <- emote.dream.data$supplements"
+"0","ggplot(data=emote.dream.data, aes( x=dream.quality, y=..count../sum(..count..) ) ) +"
+"0","  geom_bar( aes( fill=dream.emotions ), "
+"0","            position=""dodge"") +"
+"0","  labs( title=""Emotions by Oneirogens Taken"", x=""Dream Quality"","
+"0","        y=""Proportion of Responses"", fill=""Emotions"" ) + "
+"0","  facet_wrap( ~Oneirogens, labeller = ""label_both"" )"

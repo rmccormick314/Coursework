@@ -1,0 +1,2 @@
+"0","# Plot Box-Cox analysis"
+"0","boxcox( model, plotit=T, lambda=seq( -1.2, -0.2, by=0.01 ) )"

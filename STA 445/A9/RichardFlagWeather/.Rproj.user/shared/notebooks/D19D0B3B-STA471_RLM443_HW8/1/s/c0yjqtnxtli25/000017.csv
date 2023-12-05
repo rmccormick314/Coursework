@@ -1,0 +1,3 @@
+"0",""
+"0","# Q-Q Plot of Model Residuals"
+"0","qqnorm( resid( model ), main = ""The Q-Q plot for Y Residuals"" )"

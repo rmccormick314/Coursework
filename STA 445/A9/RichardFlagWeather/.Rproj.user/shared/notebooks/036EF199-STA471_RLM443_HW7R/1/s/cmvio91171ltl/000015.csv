@@ -1,0 +1,2 @@
+"0","qqnorm( resid( anderson.bancroft.model ), "
+"0","        main=""Q-Q Plot for Anderson-Bancroft Model"" )"

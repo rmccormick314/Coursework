@@ -1,0 +1,106 @@
+---
+title: "STA 471 - Homework 7"
+author: "Richard McCormick"
+date: '2023-11-20'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 2. Problem H - Develop a suitable fitted equation using these data and compare its form with the form of the one fitted by Anderson and Bancroft.
+
+```{r}
+X1 <- c( 1.76, 1.55, 2.73, 2.73, 2.56, 2.80, 2.80, 1.84, 2.16, 1.98, 0.59, 0.80, 0.80, 1.05, 1.80, 1.80, 1.77, 2.30, 2.03, 1.91, 1.91, 1.91, 0.76, 2.13, 2.13, 1.51, 2.05 )
+
+X2 <- c( 0.070, 0.070, 0.070, 0.070, 0.070, 0.070, 0.070, 0.070, 0.070, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.020, 0.474, 0.474, 0.474, 0.474, 0.474, 0.474, 0.474, 0.474, 0.474 )
+
+X3 <- c( 7.8, 8.9, 8.9, 7.2, 8.4, 8.7, 7.4, 8.7, 8.8, 7.6, 6.5, 6.7, 6.2, 7.0, 7.3, 6.5, 7.6, 8.2, 7.6, 8.3, 8.2, 6.9, 7.4, 7.6, 6.9, 7.5, 7.6 )
+
+Y <- c( 110.4, 102.8, 101.0, 108.4, 100.7, 100.3, 102.0, 93.7, 98.9, 96.6, 99.4, 96.2, 99.0, 88.4, 75.3, 92.0, 82.4, 77.1, 74.0, 65.7, 56.8, 62.1, 61.0, 53.2, 59.4, 58.7, 58.0 )
+
+turnip.data <- data.frame( X1, X2, X3, Y )
+
+anderson.bancroft.model <- lm( Y ~ X1 + X2 + X3 + I(X1*X2), data=turnip.data )
+summary( anderson.bancroft.model )
+```
+
+```{r}
+model.1 <- lm( Y ~ X1 + X2 + X3 + I(X1*X2) + I(X1^2) + I(X2^2) + I(X3^2) + I(X1^2 * X2^2), data=turnip.data )
+summary( model.1 )
+```
+
+```{r}
+model.2 <- lm( Y ~ X1 + X2 + X3 + I(X1*X2) + I(X1^2) + I(X2^2) + I(X1^2 * X2^2), data=turnip.data )
+summary( model.2 )
+```
+
+```{r}
+model.3 <- lm( Y ~ X1 + X2 + X3 + I(X1*X2) + I(X2^2), data=turnip.data )
+summary( model.3 )
+```
+
+```{r}
+model.3 <- lm( Y ~ X1 + X2 + X3 + I(X2^2), data=turnip.data )
+summary( model.3 )
+```
+
+```{r}
+model.4 <- lm( Y ~ X2 + X3 + I(X2^2), data=turnip.data )
+summary( model.4 )
+```
+
+## The appropriate model generated via backwards elimination is:  
+## $Y = \beta_0 + \beta_2X_2 + \beta_3X_3 + \beta_{22}X_2^2$
+
+# Model Analysis:  
+## 1. P Value
+The P-Value of the appropriate model is \textbf{$8.747 * 10^{-12}$}. This is statistically significant, and shows a decrease from the Anderson-Bancroft model.  
+
+## 2. $R^2$ Value  
+The $R^2$ value of the appropriate model is \textbf{0.9027}. This shows a strong, positive linear relationship. This value is significantly higher than the $R^2$ value of the Anderson-Bancroft model.
+
+## 3. $R_a^2$ Value
+The $R_a^2$ value of the appropriate model is \textbf{0.89}. This value also shows a strong, positive linear relationship. The value is significantly higher than the $R_a^2$ value of the Anderson-Bancroft model.
+
+## 4. Residual Standard Error (S Value)
+The residual standard error for the appropriate model is \textbf{6.223}. This is a significant decrease compared to the Anderson-Bancroft model.
+
+## 5. Residual Scatter Plot
+```{r}
+plot( fitted(anderson.bancroft.model), resid(anderson.bancroft.model), xlab='Fitted', ylab='Residual', main='Residual Plot for Anderson-Bancroft Model')
+abline(0, 0, lty = 2)
+plot( fitted(model.4), resid(model.4), xlab='Fitted', ylab='Residual', main='Residual Plot for Appropriate Model (Model 4)')
+abline(0, 0, lty = 2)
+```
+
+The appropriate model has a much more uniform distribution of the residuals compared to the Anderson-Bancroft model.
+
+## 6. Residual Q-Q Plot
+
+```{r}
+qqnorm( resid( anderson.bancroft.model ), 
+        main="Q-Q Plot for Anderson-Bancroft Model" )
+abline( mean( resid( anderson.bancroft.model ) ), 
+        sd( resid( anderson.bancroft.model ) ) )
+
+qqnorm( resid( model.4 ),
+        main="Q-Q Plot for Appropriate Model (Model 4)")
+abline( mean( resid( model.4 ) ), 
+        sd( resid( model.4 ) ) )
+```
+
+The appropriate model shows a stronger linear pattern with less deviation than the Anderson-Bancroft model.
+
+## 7. Shapiro & Wilk Test
+
+```{r}
+shapiro.test( resid( anderson.bancroft.model ) )
+shapiro.test( resid( model.4 ) )
+```
+
+The p-value of the Shapiro and Wilk test is significantly higher for the appropriate model, compared to the Anderson-Bancroft model. Thus, the residuals of the appropriate model are much more normally distributed.
+
+## Conclusion
+Of all statistics, plots, and tests performed on the appropriate model and the Anderson-Bancroft model, the appropriate model performs better. The appropriate model is therefor better suited to represent the data than the Anderson-Bancroft model.

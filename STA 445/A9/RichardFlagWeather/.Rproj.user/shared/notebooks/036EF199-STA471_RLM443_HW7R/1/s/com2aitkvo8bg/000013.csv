@@ -1,0 +1,1 @@
+"0","plot( fitted(anderson.bancroft.model), resid(anderson.bancroft.model), xlab='Fitted', ylab='Residual', main='Residual Plot for Anderson-Bancroft Model')"
