@@ -10,6 +10,7 @@ There are many projects spanning half a dozen different programming languages co
 | CS345 | Principles of Database Systems | Python / SQL |
 | CS396 | Principles of Languages | Racket |
 | CS450 | Introduction to Parallel Programming | C++ |
+| CS470 | Artificial Intelligence | Python |
 | CS480 | Operating Systems | C |
 | INF414 | Modelling the Spread of Infectious Diseases | R Markdown |
 | STA444 | Introduction to R | R Markdown |
