@@ -12,6 +12,7 @@ There are many projects spanning half a dozen different programming languages co
 | CS450 | Introduction to Parallel Programming | C++ |
 | CS470 | Artificial Intelligence | Python / Jupyter Notebook |
 | CS480 | Operating Systems | C |
+| CS499 | Contemporary Topics: Deep Learning | Python |
 | INF414 | Modelling the Spread of Infectious Diseases | R Markdown |
 | STA444 | Introduction to R | R Markdown |
 | STA445 | Data Wrangling & Exploration in R | R Markdown |
